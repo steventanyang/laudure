@@ -53,11 +53,3 @@ data/
 │   │   ├── processor.py        # Reservation processing logic
 │   │   └── prompts.py          # All prompts in one place
 ```
-
-## Optimization Opportunities
-
-1. **Caching**: Implement caching for similar requests
-2. **Prompt Optimization**: Reduce token usage by optimizing prompts
-3. **Batch Processing**: Process similar reservations in batches
-4. **Model Selection**: Use smaller models for simpler tasks
-5. **Parallel Processing**: Increase worker count for faster processing

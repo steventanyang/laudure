@@ -109,10 +109,12 @@ def augment_dataset(input_path: str, output_path: str, max_workers: int = 8):
             for res_idx, reservation in enumerate(diner.reservations):
                 reservation_dict = reservation.dict()
                 
-                # Only process future reservations
-                today = date.today()
-                if reservation.date >= today:
-                    reservations_to_process.append((diner_idx, res_idx, diner_dict, reservation_dict))
+                # TODO: Remove
+                # test 3 reservations
+                # today = date.today()
+                # if reservation.date >= today:
+                #     reservations_to_process.append((diner_idx, res_idx, diner_dict, reservation_dict))
+                reservations_to_process.append((diner_idx, res_idx, diner_dict, reservation_dict))
     
     print(f"Found {len(reservations_to_process)} future reservations to process")
     

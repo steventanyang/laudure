@@ -5,12 +5,32 @@ Base agent class and utility functions for the restaurant multi-agent system.
 import json
 import time
 import threading
-from typing import Dict, Any
-from openai import OpenAI
+import random
 import os
+from typing import Dict, Any, List
+from openai import OpenAI, RateLimitError, APIError
+import backoff
 
-# Initialize the OpenAI client
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+# Global lock for key rotation
+key_lock = threading.Lock()
+
+# Load all available API keys
+API_KEYS = [
+    os.environ.get("OPENAI_API_KEY"),
+    os.environ.get("OPENAI_API_KEY2"),
+    os.environ.get("OPENAI_API_KEY3")
+]
+# Filter out None or empty values
+API_KEYS = [key for key in API_KEYS if key]
+
+if not API_KEYS:
+    raise ValueError("No valid OpenAI API keys found in environment variables")
+
+# Current key index
+current_key_index = 0
+
+# Initialize the OpenAI client with the first key
+client = OpenAI(api_key=API_KEYS[current_key_index])
 
 # Global counters for token usage and timing
 token_usage = {
@@ -23,11 +43,21 @@ token_lock = threading.Lock()
 # Performance metrics
 performance_metrics = {
     "api_calls": 0,
+    "api_errors": 0,
+    "api_retries": 0,
     "total_api_time": 0,
     "max_api_time": 0,
     "min_api_time": float('inf')
 }
 metrics_lock = threading.Lock()
+
+def rotate_api_key():
+    """Rotate to next available API key"""
+    global current_key_index, client
+    with key_lock:
+        current_key_index = (current_key_index + 1) % len(API_KEYS)
+        client = OpenAI(api_key=API_KEYS[current_key_index])
+        print(f"Rotated to API key {current_key_index + 1}/{len(API_KEYS)}")
 
 def update_token_usage(usage_data):
     """Update the global token usage counters"""
@@ -43,6 +73,16 @@ def update_performance_metrics(api_time):
         performance_metrics["total_api_time"] += api_time
         performance_metrics["max_api_time"] = max(performance_metrics["max_api_time"], api_time)
         performance_metrics["min_api_time"] = min(performance_metrics["min_api_time"], api_time)
+
+def increment_error_count():
+    """Increment the API error counter"""
+    with metrics_lock:
+        performance_metrics["api_errors"] += 1
+
+def increment_retry_count():
+    """Increment the API retry counter"""
+    with metrics_lock:
+        performance_metrics["api_retries"] += 1
 
 def clean_json_response(response_text):
     """Clean the response text to extract valid JSON"""
@@ -72,7 +112,9 @@ def reset_metrics():
     
     with metrics_lock:
         performance_metrics.update({
-            "api_calls": 0, 
+            "api_calls": 0,
+            "api_errors": 0,
+            "api_retries": 0,
             "total_api_time": 0, 
             "max_api_time": 0, 
             "min_api_time": float('inf')
@@ -87,6 +129,8 @@ def print_metrics(total_time, num_reservations):
     
     print("\n===== API Call Metrics =====")
     print(f"Total API calls: {performance_metrics['api_calls']}")
+    print(f"API errors: {performance_metrics['api_errors']}")
+    print(f"API retries: {performance_metrics['api_retries']}")
     avg_api_time = performance_metrics['total_api_time'] / max(1, performance_metrics['api_calls'])
     print(f"Average API call time: {avg_api_time:.2f} seconds")
     print(f"Min API call time: {performance_metrics['min_api_time']:.2f} seconds")
@@ -103,12 +147,60 @@ def print_metrics(total_time, num_reservations):
     total_cost = prompt_cost + completion_cost
     print(f"Estimated cost: ${total_cost:.2f}")
 
+# Define a backoff handler for API calls
+def backoff_handler(details):
+    """Handler that executes when a retry or giveup event occurs"""
+    fail_msg = f"API call failed after {details['tries']} tries"
+    if details.get('exception'):
+        fail_msg += f": {details['exception']}"
+    
+    increment_retry_count()
+    print(f"Retrying API call (attempt {details['tries']})")
+    
+    # Rotate to next API key
+    rotate_api_key()
+
+# Define conditions for retrying
+def retry_if_rate_limit_or_api_error(exception):
+    """Return True if we should retry, False otherwise"""
+    if isinstance(exception, (RateLimitError, APIError)):
+        return True
+    return False
+
 class BaseAgent:
     """Base class for all specialized agents"""
     
     def __init__(self, name: str, prompt_template: str):
         self.name = name
         self.prompt_template = prompt_template
+    
+    @backoff.on_exception(
+        backoff.expo, 
+        (RateLimitError, APIError),
+        max_tries=10,  # Maximum number of attempts
+        on_backoff=backoff_handler,
+        jitter=backoff.full_jitter,  # Add randomness to the backoff
+        factor=1.5  # Multiply the base backoff by this factor
+    )
+    def _call_api(self, messages, temperature=0):
+        """Make an API call with automatic retry logic"""
+        start_time = time.time()
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4o",
+                messages=messages,
+                temperature=temperature
+            )
+            api_time = time.time() - start_time
+            
+            # Update metrics
+            update_token_usage(response.usage)
+            update_performance_metrics(api_time)
+            
+            return response
+        except Exception as e:
+            increment_error_count()
+            raise
     
     def analyze(self, diner: Dict, reservation: Dict) -> Dict:
         """Run analysis on diner and reservation data
@@ -139,20 +231,12 @@ class BaseAgent:
         )
         
         try:
-            start_time = time.time()
-            response = client.chat.completions.create(
-                model="gpt-4o",
-                messages=[
-                    {"role": "system", "content": "You are a specialized agent for a restaurant. Return only valid JSON without markdown formatting or code blocks."},
-                    {"role": "user", "content": prompt}
-                ],
-                temperature=0
-            )
-            api_time = time.time() - start_time
+            messages = [
+                {"role": "system", "content": "You are a specialized agent for a restaurant. Return only valid JSON without markdown formatting or code blocks."},
+                {"role": "user", "content": prompt}
+            ]
             
-            # Update metrics
-            update_token_usage(response.usage)
-            update_performance_metrics(api_time)
+            response = self._call_api(messages)
             
             result = response.choices[0].message.content
             

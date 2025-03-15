@@ -46,3 +46,4 @@ next-env.d.ts
 # data
 data/.venv
 data/scripts/__pycache__
+data/scripts/agents/__pycache__

@@ -6,9 +6,7 @@ import json
 import time
 from typing import Dict
 from .base import (
-    client, 
-    update_token_usage, 
-    update_performance_metrics,
+    BaseAgent,
     clean_json_response
 )
 from .prompts import COORDINATOR_PROMPT
@@ -18,6 +16,7 @@ class CoordinatorAgent:
     
     def __init__(self):
         self.prompt_template = COORDINATOR_PROMPT
+        self._base_agent = BaseAgent("Coordinator", "")  # Used for API calls
     
     def coordinate(self, diner: Dict, reservation: Dict, agent_results: Dict) -> Dict:
         """Combine and prioritize insights from specialized agents
@@ -61,20 +60,12 @@ class CoordinatorAgent:
         )
         
         try:
-            start_time = time.time()
-            response = client.chat.completions.create(
-                model="gpt-4o",
-                messages=[
-                    {"role": "system", "content": "You are a coordinator agent for a restaurant. Return only valid JSON without markdown formatting or code blocks."},
-                    {"role": "user", "content": prompt}
-                ],
-                temperature=0
-            )
-            api_time = time.time() - start_time
+            messages = [
+                {"role": "system", "content": "You are a coordinator agent for a restaurant. Return only valid JSON without markdown formatting or code blocks."},
+                {"role": "user", "content": prompt}
+            ]
             
-            # Update metrics
-            update_token_usage(response.usage)
-            update_performance_metrics(api_time)
+            response = self._base_agent._call_api(messages)
             
             result = response.choices[0].message.content
             
