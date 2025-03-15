@@ -77,11 +77,6 @@
               "item": "Chocolate Souffl\u00e9",
               "dietary_tags": [],
               "price": 18.0
-            },
-            {
-              "item": "Beef Bourguignon/Boeuf Bourguignon",
-              "dietary_tags": [],
-              "price": 50.0
             }
           ],
           "time": "19:30"
@@ -155,14 +150,14 @@
           "number_of_people": 2,
           "orders": [
             {
-              "item": "Boeuf Bourguignon",
+              "item": "Beef Bourguignon",
               "dietary_tags": [],
               "price": 60.0
             },
             {
-              "item": "Beef Bourguignon/Boeuf Bourguignon",
+              "item": "Coq au Vin",
               "dietary_tags": [],
-              "price": 50.0
+              "price": 46.25
             }
           ],
           "time": "19:30"
@@ -243,9 +238,9 @@
               "price": 25.0
             },
             {
-              "item": "Rabbit Roulade",
+              "item": "Beef Bourguignon",
               "dietary_tags": [],
-              "price": 62.0
+              "price": 50.0
             }
           ],
           "time": "19:30"
@@ -324,9 +319,9 @@
               "price": 58.0
             },
             {
-              "item": "Duck Confit",
+              "item": "Coq au Vin",
               "dietary_tags": [],
-              "price": 45.4
+              "price": 46.25
             }
           ],
           "time": "19:30"
@@ -367,9 +362,9 @@
               "price": 16.0
             },
             {
-              "item": "Salmon en Papillote",
+              "item": "Duck Confit",
               "dietary_tags": [],
-              "price": 42.0
+              "price": 45.4
             }
           ],
           "time": "19:00"
@@ -410,9 +405,9 @@
               "price": 50.0
             },
             {
-              "item": "Salmon en Papillote",
+              "item": "Rabbit Roulade",
               "dietary_tags": [],
-              "price": 42.0
+              "price": 62.0
             }
           ],
           "time": "18:30"
@@ -455,14 +450,14 @@
               "price": 30.0
             },
             {
-              "item": "Rabbit Roulade",
+              "item": "Duck Confit",
               "dietary_tags": [
                 "dairy-free"
               ],
-              "price": 62.0
+              "price": 45.4
             }
           ],
-          "time": "20:00"
+          "time": "19:30"
         }
       ],
       "emails": [
@@ -500,9 +495,9 @@
               "price": 25.0
             },
             {
-              "item": "Rabbit Roulade",
+              "item": "Coq au Vin",
               "dietary_tags": [],
-              "price": 62.0
+              "price": 46.25
             }
           ],
           "time": "20:00"
@@ -581,9 +576,9 @@
               "price": 54.0
             },
             {
-              "item": "Beef Bourguignon/Boeuf Bourguignon",
+              "item": "Duck Confit",
               "dietary_tags": [],
-              "price": 50.0
+              "price": 45.4
             }
           ],
           "time": "20:00"
@@ -700,14 +695,14 @@
           "number_of_people": 2,
           "orders": [
             {
-              "item": "Boeuf Bourguignon",
+              "item": "Beef Bourguignon",
               "dietary_tags": [],
               "price": 59.0
             },
             {
-              "item": "Salmon en Papillote",
+              "item": "Coq au Vin",
               "dietary_tags": [],
-              "price": 42.0
+              "price": 46.25
             }
           ],
           "time": "20:30"
@@ -748,9 +743,9 @@
               "price": 26.0
             },
             {
-              "item": "Salmon en Papillote",
+              "item": "Beef Bourguignon",
               "dietary_tags": [],
-              "price": 42.0
+              "price": 50.0
             }
           ],
           "time": "20:30"
@@ -862,14 +857,14 @@
           "number_of_people": 2,
           "orders": [
             {
-              "item": "Boeuf Bourguignon",
+              "item": "Beef Bourguignon",
               "dietary_tags": [],
               "price": 60.0
             },
             {
-              "item": "Rabbit Roulade",
+              "item": "Duck Confit",
               "dietary_tags": [],
-              "price": 62.0
+              "price": 45.4
             }
           ],
           "time": "20:30"
@@ -910,9 +905,9 @@
               "price": 28.0
             },
             {
-              "item": "Salmon en Papillote",
+              "item": "Duck Confit",
               "dietary_tags": [],
-              "price": 42.0
+              "price": 45.4
             }
           ],
           "time": "20:30"
@@ -1035,14 +1030,14 @@
           "number_of_people": 2,
           "orders": [
             {
-              "item": "Boeuf Bourguignon",
+              "item": "Beef Bourguignon",
               "dietary_tags": [],
               "price": 57.0
             },
             {
-              "item": "Rabbit Roulade",
+              "item": "Salmon en Papillote",
               "dietary_tags": [],
-              "price": 62.0
+              "price": 42.0
             }
           ],
           "time": "21:00"
@@ -1083,7 +1078,7 @@
               "price": 190.0
             }
           ],
-          "time": "20:00"
+          "time": "19:00"
         }
       ],
       "emails": [
@@ -1166,11 +1161,11 @@
               "price": 25.0
             },
             {
-              "item": "Salmon en Papillote",
+              "item": "Coq au Vin",
               "dietary_tags": [
                 "pescatarian"
               ],
-              "price": 42.0
+              "price": 46.25
             }
           ],
           "time": "19:00"
@@ -1327,11 +1322,11 @@
               "price": 28.0
             },
             {
-              "item": "Duck Confit",
+              "item": "Salmon en Papillote",
               "dietary_tags": [
                 "shellfish-free"
               ],
-              "price": 45.4
+              "price": 42.0
             }
           ],
           "time": "21:00"
@@ -1372,9 +1367,9 @@
               "price": 56.0
             },
             {
-              "item": "Rabbit Roulade",
+              "item": "Duck Confit",
               "dietary_tags": [],
-              "price": 62.0
+              "price": 45.4
             }
           ],
           "time": "21:00"
@@ -1415,7 +1410,7 @@
               "price": 170.0
             }
           ],
-          "time": "19:30"
+          "time": "20:00"
         }
       ],
       "emails": [
@@ -1448,14 +1443,14 @@
           "number_of_people": 2,
           "orders": [
             {
-              "item": "Boeuf Bourguignon",
+              "item": "Beef Bourguignon",
               "dietary_tags": [],
               "price": 55.0
             },
             {
-              "item": "Beef Bourguignon/Boeuf Bourguignon",
+              "item": "Coq au Vin",
               "dietary_tags": [],
-              "price": 50.0
+              "price": 46.25
             }
           ],
           "time": "21:00"
@@ -1496,9 +1491,9 @@
               "price": 26.0
             },
             {
-              "item": "Salmon en Papillote",
+              "item": "Beef Bourguignon",
               "dietary_tags": [],
-              "price": 42.0
+              "price": 50.0
             }
           ],
           "time": "19:00"
@@ -1579,11 +1574,11 @@
               "price": 24.0
             },
             {
-              "item": "Salmon en Papillote",
+              "item": "Duck Confit",
               "dietary_tags": [
                 "pescatarian"
               ],
-              "price": 42.0
+              "price": 45.4
             }
           ],
           "time": "21:30"
@@ -1705,9 +1700,9 @@
               "price": 44.0
             },
             {
-              "item": "Duck Confit",
+              "item": "Salmon en Papillote",
               "dietary_tags": [],
-              "price": 45.4
+              "price": 42.0
             }
           ],
           "time": "21:30"
@@ -1748,9 +1743,9 @@
               "price": 26.0
             },
             {
-              "item": "Salmon en Papillote",
+              "item": "Beef Bourguignon",
               "dietary_tags": [],
-              "price": 42.0
+              "price": 50.0
             }
           ],
           "time": "21:30"
@@ -1829,9 +1824,9 @@
               "price": 55.0
             },
             {
-              "item": "Beef Bourguignon/Boeuf Bourguignon",
+              "item": "Rabbit Roulade",
               "dietary_tags": [],
-              "price": 50.0
+              "price": 62.0
             }
           ],
           "time": "22:00"
@@ -1872,9 +1867,9 @@
               "price": 22.0
             },
             {
-              "item": "Coq au Vin",
+              "item": "Salmon en Papillote",
               "dietary_tags": [],
-              "price": 46.25
+              "price": 42.0
             }
           ],
           "time": "22:00"
@@ -1915,7 +1910,7 @@
               "price": 195.0
             }
           ],
-          "time": "19:00"
+          "time": "19:30"
         }
       ],
       "emails": [
@@ -1991,14 +1986,14 @@
           "number_of_people": 2,
           "orders": [
             {
-              "item": "Boeuf Bourguignon",
+              "item": "Beef Bourguignon",
               "dietary_tags": [],
               "price": 58.0
             },
             {
-              "item": "Beef Bourguignon/Boeuf Bourguignon",
+              "item": "Rabbit Roulade",
               "dietary_tags": [],
-              "price": 50.0
+              "price": 62.0
             }
           ],
           "time": "22:00"
@@ -2039,7 +2034,7 @@
               "price": 185.0
             }
           ],
-          "time": "19:30"
+          "time": "19:00"
         }
       ],
       "emails": [
@@ -2077,7 +2072,7 @@
               "price": 16.0
             },
             {
-              "item": "Beef Bourguignon/Boeuf Bourguignon",
+              "item": "Beef Bourguignon",
               "dietary_tags": [],
               "price": 50.0
             }
@@ -2196,14 +2191,14 @@
           "number_of_people": 2,
           "orders": [
             {
-              "item": "Boeuf Bourguignon",
+              "item": "Beef Bourguignon",
               "dietary_tags": [],
               "price": 59.0
             },
             {
-              "item": "Beef Bourguignon/Boeuf Bourguignon",
+              "item": "Rabbit Roulade",
               "dietary_tags": [],
-              "price": 50.0
+              "price": 62.0
             }
           ],
           "time": "18:00"
@@ -2244,7 +2239,7 @@
               "price": 175.0
             }
           ],
-          "time": "19:00"
+          "time": "20:00"
         }
       ],
       "emails": [

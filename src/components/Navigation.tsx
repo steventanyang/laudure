@@ -7,7 +7,7 @@ import { NavItem, IndicatorStyle } from "@/types";
 
 const navItems: NavItem[] = [
   { name: "Overview", path: "/" },
-  { name: "Timeline", path: "/timeline" },
+  { name: "Volume", path: "/volume" },
   { name: "Special", path: "/special" },
   { name: "View All", path: "/view-all" },
 ];
