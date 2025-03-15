@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TreemapChart from "@/components/TreemapChart";
 import { CourseType, CourseOption, MealDataByCourse } from "@/types";
 
@@ -8,30 +8,10 @@ import { CourseType, CourseOption, MealDataByCourse } from "@/types";
 import { GiCupcake, GiMeal, GiChefToque } from "react-icons/gi";
 
 export default function Overview() {
-  // Define meal data for each course
-  const mealData: MealDataByCourse = {
-    appetizers: [
-      { name: "Escargots", count: 12, color: "#8bc34a" },
-      { name: "Foie Gras", count: 18, color: "#cddc39" },
-      { name: "Salmon Tartare", count: 14, color: "#ffeb3b" },
-      { name: "Lobster Bisque", count: 9, color: "#ffc107" },
-      { name: "Salade Niçoise", count: 7, color: "#ff9800" },
-    ],
-    mains: [
-      { name: "Salmon en Papillote", count: 16, color: "#bac94a" },
-      { name: "Duck Confit", count: 13, color: "#e0b0b0" },
-      { name: "Boeuf Bourguignon", count: 20, color: "#85b1bd" },
-      { name: "Rabbit Roulade", count: 10, color: "#ce92ce" },
-      { name: "Coq au Vin", count: 5, color: "#cbba89" },
-    ],
-    desserts: [
-      { name: "Chocolate Soufflé", count: 22, color: "#795548" },
-      { name: "Crème Brûlée", count: 25, color: "#ffca28" },
-      { name: "Tarte Tatin", count: 15, color: "#ff7043" },
-      { name: "Profiteroles", count: 11, color: "#d7ccc8" },
-      { name: "Mousse au Chocolat", count: 18, color: "#6d4c41" },
-    ],
-  };
+  // State for meal data
+  const [mealData, setMealData] = useState<MealDataByCourse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // State to track the selected course
   const [selectedCourse, setSelectedCourse] = useState<CourseType>("mains");
@@ -42,6 +22,50 @@ export default function Overview() {
     { id: "mains", name: "Main Courses", icon: <GiMeal size={32} /> },
     { id: "desserts", name: "Desserts", icon: <GiCupcake size={32} /> },
   ];
+
+  // Fetch data from API
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/menu-analytics");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        setMealData(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "An error occurred");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl">Loading meal data...</div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error || !mealData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl text-red-500">
+          {error || "Failed to load meal data"}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center p-8">
