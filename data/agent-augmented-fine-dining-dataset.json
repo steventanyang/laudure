@@ -330,23 +330,19 @@
                 ],
                 "service_preferences": {
                   "style": "attentive",
-                  "evidence": "Appreciated waitstaff explaining the menu and making recommendations at Pho Real"
+                  "evidence": "appreciation for waitstaff explaining the menu and making recommendations at Pho Real"
                 },
                 "conversation_topics": [
                   {
-                    "topic": "menu recommendations",
-                    "context": "Pho Real review"
-                  },
-                  {
-                    "topic": "kid-friendly menu options",
-                    "context": "email about family reservation"
+                    "topic": "family dining and kid-friendly options",
+                    "context": "email about family reservation and kid's meal"
                   }
                 ]
               },
               "special_requests": {
                 "explicit_requests": [
                   {
-                    "request": "Inquiry about kid-friendly menu or half portions for teenage niece",
+                    "request": "Kid-friendly menu or half portions for teenage niece",
                     "priority": "medium",
                     "source": "email dated 2025-04-02"
                   }
@@ -354,7 +350,7 @@
                 "service_modifications": [
                   {
                     "modification": "Consider offering smaller portions or kid-friendly options",
-                    "notes": "Guest inquired about options for a teenage niece"
+                    "notes": "Requested for teenage niece"
                   }
                 ],
                 "time_sensitive": [],
@@ -363,34 +359,30 @@
               "personalization": {
                 "personalization_opportunities": [
                   {
-                    "opportunity": "Offer a quieter dining area",
-                    "implementation": "Seat Benjamin and his party in a quieter section of the restaurant to enhance conversation",
+                    "opportunity": "Offer a quieter seating area",
+                    "implementation": "Reserve a table in a quieter section of the restaurant to enhance conversation",
                     "impact": "high"
                   },
                   {
                     "opportunity": "Provide a kid-friendly menu or smaller portions",
-                    "implementation": "Prepare a special menu with smaller portion options for Benjamin's teenage niece",
+                    "implementation": "Prepare a special menu with smaller portions or kid-friendly options for the teenage niece",
                     "impact": "medium"
                   }
                 ],
                 "upsell_opportunities": [
                   {
-                    "item": "Suggest a wine pairing with the Duck Confit",
-                    "rationale": "Enhance the dining experience with a complementary wine that pairs well with the Duck Confit"
-                  },
-                  {
-                    "item": "Recommend a dessert with less sweetness",
-                    "rationale": "Based on Benjamin's preference for less sweet flavors, suggest a dessert like a cheese platter or a tart"
+                    "item": "Bubble tea or a unique beverage pairing",
+                    "rationale": "Benjamin enjoyed a recommended bubble tea at another restaurant, suggesting an interest in unique beverage pairings"
                   }
                 ],
                 "recognition_moments": [
                   {
-                    "moment": "Acknowledge Benjamin's appreciation for attentive service",
-                    "approach": "Mention how the staff is ready to provide detailed menu explanations and recommendations"
+                    "moment": "Upon arrival",
+                    "approach": "Welcome Benjamin by name and acknowledge his previous visit, ensuring a personalized experience"
                   },
                   {
-                    "moment": "Discuss Benjamin's interest in authentic cuisine",
-                    "approach": "Engage in a conversation about the authenticity of the dishes and the chef's inspiration"
+                    "moment": "During dessert",
+                    "approach": "Offer a complimentary dessert or a special treat for the teenage niece to make the family feel special"
                   }
                 ]
               }
@@ -398,42 +390,42 @@
             "coordinator_summary": {
               "priority_alerts": [
                 {
-                  "alert": "Consider offering a smaller portion or kid-friendly option for the teenage niece.",
+                  "alert": "Consider offering a smaller portion or kid-friendly option for the teenage niece",
                   "category": "dietary",
                   "for": "kitchen"
                 },
                 {
-                  "alert": "Seat Benjamin and his party in a quieter section of the restaurant to enhance conversation.",
+                  "alert": "Reserve a table in a quieter section of the restaurant to enhance conversation",
                   "category": "personalization",
-                  "for": "service"
+                  "for": "management"
                 }
               ],
               "guest_profile": {
-                "dining_style": "Appreciates attentive service and authentic cuisine.",
+                "dining_style": "Attentive service with personalized recommendations",
                 "preferences": [
-                  "Attentive service with menu explanations",
-                  "Authentic cuisine"
+                  "Authentic flavors",
+                  "Attentive service"
                 ],
                 "avoid": [
-                  "Overly sweet flavors",
-                  "Loud dining environments"
+                  "Overly sweet dishes",
+                  "Loud environments"
                 ]
               },
               "service_recommendations": [
                 {
-                  "recommendation": "Acknowledge Benjamin's appreciation for attentive service and offer menu recommendations.",
-                  "timing": "Upon seating",
+                  "recommendation": "Welcome Benjamin by name and acknowledge his previous visit",
+                  "timing": "Upon arrival",
                   "owner": "service"
                 },
                 {
-                  "recommendation": "Engage in a conversation about the authenticity of the dishes and the chef's inspiration.",
-                  "timing": "During meal",
+                  "recommendation": "Offer a complimentary dessert or a special treat for the teenage niece",
+                  "timing": "During dessert",
                   "owner": "service"
                 }
               ],
               "kitchen_notes": [
                 {
-                  "note": "Consider offering a smaller portion or kid-friendly option.",
+                  "note": "Consider offering a smaller portion or kid-friendly option",
                   "dish": "Duck Confit"
                 }
               ]
@@ -610,11 +602,15 @@
                 },
                 "conversation_topics": [
                   {
-                    "topic": "celebrations and family events",
+                    "topic": "celebratory events",
                     "context": "Graduation Celebration Booking email"
                   },
                   {
-                    "topic": "scenic photography",
+                    "topic": "non-alcoholic options",
+                    "context": "Graduation Celebration Booking email"
+                  },
+                  {
+                    "topic": "scenic spots for photos",
                     "context": "Graduation Celebration Booking email"
                   }
                 ]
@@ -622,26 +618,21 @@
               "special_requests": {
                 "explicit_requests": [
                   {
-                    "request": "Provide sparkling cider or non-alcoholic options for a toast",
+                    "request": "sparkling cider or non-alcoholic options",
                     "priority": "high",
                     "source": "email dated 2025-05-01"
                   },
                   {
-                    "request": "Scenic spots for photos",
+                    "request": "scenic spots for photos",
                     "priority": "medium",
                     "source": "email dated 2025-05-01"
                   }
                 ],
                 "service_modifications": [],
-                "time_sensitive": [
-                  {
-                    "need": "Celebratory toast",
-                    "timing": "During the reservation on 2025-05-10"
-                  }
-                ],
+                "time_sensitive": [],
                 "special_occasions": [
                   {
-                    "occasion": "Graduation celebration",
+                    "occasion": "Graduation Celebration",
                     "details": "Celebrating sister's graduation with a toast"
                   }
                 ]
@@ -649,34 +640,34 @@
               "personalization": {
                 "personalization_opportunities": [
                   {
-                    "opportunity": "Offer a special mango salsa dish or appetizer",
-                    "implementation": "Create a custom appetizer featuring mango salsa and mention it to Eve as a special treat based on her past review.",
+                    "opportunity": "Offer mango salsa as a side or topping",
+                    "implementation": "Include a complimentary side of mango salsa with the meal or as a topping option",
                     "impact": "high"
                   },
                   {
-                    "opportunity": "Provide a scenic photo opportunity",
-                    "implementation": "Reserve a table with a view and offer to take a group photo at a scenic spot in the restaurant.",
+                    "opportunity": "Provide a scenic photo spot",
+                    "implementation": "Reserve a table with a scenic view and inform the guest about the best spots for photos",
                     "impact": "medium"
                   }
                 ],
                 "upsell_opportunities": [
                   {
-                    "item": "Suggest a premium non-alcoholic beverage or sparkling cider",
-                    "rationale": "Eve inquired about non-alcoholic options for a celebratory toast, indicating interest in premium non-alcoholic beverages."
+                    "item": "Sparkling cider or non-alcoholic champagne",
+                    "rationale": "Guest inquired about non-alcoholic options for a celebratory toast"
                   },
                   {
-                    "item": "Offer a dessert pairing with the main course",
-                    "rationale": "Given the fine dining context and the celebratory nature of the visit, a dessert pairing could enhance the dining experience."
+                    "item": "Seafood special",
+                    "rationale": "Guest enjoyed fresh fish tacos at another restaurant, indicating a preference for seafood"
                   }
                 ],
                 "recognition_moments": [
                   {
-                    "moment": "Celebrate Eve's sister's graduation",
-                    "approach": "Congratulate Eve and her sister upon arrival and offer a complimentary toast with sparkling cider."
+                    "moment": "Upon arrival",
+                    "approach": "Congratulate Eve's sister on her graduation and offer a complimentary toast"
                   },
                   {
-                    "moment": "Acknowledge Eve's previous dining experiences",
-                    "approach": "Mention her past visits to other restaurants and express excitement to provide a memorable experience."
+                    "moment": "During dessert",
+                    "approach": "Present a personalized dessert plate with a congratulatory message"
                   }
                 ]
               }
@@ -684,26 +675,21 @@
             "coordinator_summary": {
               "priority_alerts": [
                 {
-                  "alert": "Provide sparkling cider or non-alcoholic options for a toast",
-                  "category": "request",
-                  "for": "service"
-                },
-                {
                   "alert": "Ensure non-alcoholic options are available for celebratory toast",
                   "category": "dietary",
-                  "for": "kitchen"
+                  "for": "kitchen/service"
                 },
                 {
-                  "alert": "Celebrate Eve's sister's graduation with a complimentary toast",
-                  "category": "personalization",
-                  "for": "service"
+                  "alert": "Provide scenic spots for photos",
+                  "category": "experience",
+                  "for": "service/management"
                 }
               ],
               "guest_profile": {
                 "dining_style": "Eve appreciates attentive service and enjoys fresh, flavorful dishes",
                 "preferences": [
                   "attentive service",
-                  "fresh and flavorful dishes"
+                  "fresh seafood"
                 ],
                 "avoid": [
                   "limited topping options"
@@ -711,23 +697,28 @@
               },
               "service_recommendations": [
                 {
-                  "recommendation": "Congratulate Eve and her sister upon arrival and offer a complimentary toast with sparkling cider",
-                  "timing": "upon arrival",
+                  "recommendation": "Congratulate Eve's sister on her graduation and offer a complimentary toast",
+                  "timing": "Upon arrival",
                   "owner": "service"
                 },
                 {
-                  "recommendation": "Reserve a table with a view and offer to take a group photo at a scenic spot",
-                  "timing": "before seating",
+                  "recommendation": "Present a personalized dessert plate with a congratulatory message",
+                  "timing": "During dessert",
+                  "owner": "service"
+                },
+                {
+                  "recommendation": "Inform the guest about the best spots for photos",
+                  "timing": "During seating",
                   "owner": "service"
                 }
               ],
               "kitchen_notes": [
                 {
-                  "note": "Ensure non-alcoholic options are available for celebratory toast",
+                  "note": "Include a complimentary side of mango salsa with the meal or as a topping option",
                   "dish": "Foie Gras"
                 },
                 {
-                  "note": "Ensure non-alcoholic options are available for celebratory toast",
+                  "note": "Include a complimentary side of mango salsa with the meal or as a topping option",
                   "dish": "Rabbit Roulade"
                 }
               ]
@@ -2279,23 +2270,18 @@
                 "past_impressions": [
                   {
                     "type": "positive",
-                    "aspect": "Top-tier steak cooked to order",
-                    "source": "Steakhouse Prime review"
-                  },
-                  {
-                    "type": "positive",
-                    "aspect": "Robust wine list and excellent wine recommendation",
+                    "aspect": "steak quality and wine pairing",
                     "source": "Steakhouse Prime review"
                   },
                   {
                     "type": "negative",
-                    "aspect": "Sushi rice too vinegary and fish not fresh",
+                    "aspect": "sushi rice and fish freshness",
                     "source": "Sunshine Sushi review"
                   }
                 ],
                 "service_preferences": {
                   "style": "attentive",
-                  "evidence": "Appreciation for staff's wine recommendation at Steakhouse Prime"
+                  "evidence": "Appreciated staff recommendation of wine at Steakhouse Prime; noted polite service at Sunshine Sushi despite negative review"
                 },
                 "conversation_topics": [
                   {
@@ -2304,68 +2290,68 @@
                   },
                   {
                     "topic": "special engagement planning",
-                    "context": "Email about proposing with a string quartet"
+                    "context": "email about proposing with a string quartet"
                   }
                 ]
               },
               "special_requests": {
                 "explicit_requests": [
                   {
-                    "request": "Allow a small string quartet to perform one song for a proposal",
+                    "request": "Allow a small string quartet for a proposal",
                     "priority": "high",
                     "source": "email dated 2025-03-10"
                   }
                 ],
                 "service_modifications": [
                   {
-                    "modification": "Permit a musical performance during dinner",
-                    "notes": "Guest plans to propose with a string quartet"
+                    "modification": "Permit live music performance",
+                    "notes": "Guest plans to propose with a string quartet playing one song"
                   }
                 ],
                 "time_sensitive": [
                   {
-                    "need": "Coordinate the string quartet performance with the proposal",
-                    "timing": "During the dinner on 2025-03-18"
+                    "need": "Confirmation of quartet performance",
+                    "timing": "Before 2025-03-18"
                   }
                 ],
                 "special_occasions": [
                   {
                     "occasion": "Engagement proposal",
-                    "details": "Guest plans to propose during dinner with a musical performance"
+                    "details": "Guest plans to propose during the dinner with a string quartet"
                   }
                 ]
               },
               "personalization": {
                 "personalization_opportunities": [
                   {
-                    "opportunity": "Propose a wine pairing with the Chef's Tasting Menu",
-                    "implementation": "Offer a selection of wines that complement the tasting menu, highlighting a Malbec option given past preference",
+                    "opportunity": "Wine pairing with the Chef's Tasting Menu",
+                    "implementation": "Offer a curated wine pairing option that includes a Malbec, as Oscar enjoyed it previously.",
                     "impact": "high"
                   },
                   {
-                    "opportunity": "Arrange a special moment for the proposal",
-                    "implementation": "Coordinate with the string quartet to ensure a seamless and memorable proposal experience",
+                    "opportunity": "Special proposal setup",
+                    "implementation": "Coordinate with Oscar to arrange the string quartet surprise and ensure a seamless experience.",
                     "impact": "high"
                   }
                 ],
                 "upsell_opportunities": [
                   {
                     "item": "Premium wine selection",
-                    "rationale": "Oscar appreciated a well-paired Malbec in the past, indicating a willingness to explore and enjoy fine wines"
+                    "rationale": "Oscar appreciates a robust wine list and has previously enjoyed a recommended Malbec."
                   },
                   {
-                    "item": "Dessert wine or after-dinner drinks",
-                    "rationale": "Enhance the dining experience with a sweet finish, especially on a special occasion like a proposal"
+                    "item": "Exclusive dessert offering",
+                    "rationale": "Enhance the special occasion with a unique dessert option to celebrate the proposal."
                   }
                 ],
                 "recognition_moments": [
                   {
-                    "moment": "Acknowledging Oscar's appreciation for wine",
-                    "approach": "Mention the previous positive experience with the Malbec and offer similar recommendations"
+                    "moment": "Upon arrival",
+                    "approach": "Greet Oscar and his guest warmly, acknowledging the special occasion and confirming the proposal arrangements."
                   },
                   {
-                    "moment": "Special occasion of the proposal",
-                    "approach": "Congratulate Oscar and offer a complimentary toast or dessert to celebrate the engagement"
+                    "moment": "During dessert",
+                    "approach": "Congratulate the couple on their engagement with a complimentary celebratory dessert or champagne toast."
                   }
                 ]
               }
@@ -2373,21 +2359,21 @@
             "coordinator_summary": {
               "priority_alerts": [
                 {
-                  "alert": "Coordinate the string quartet performance with the proposal",
+                  "alert": "Confirm and coordinate string quartet performance for proposal",
                   "category": "request",
                   "for": "management"
                 },
                 {
-                  "alert": "Arrange a special moment for the proposal",
+                  "alert": "Offer curated wine pairing with Chef's Tasting Menu",
                   "category": "personalization",
-                  "for": "service"
+                  "for": "kitchen/service"
                 }
               ],
               "guest_profile": {
-                "dining_style": "Attentive service with a focus on wine pairing and special experiences",
+                "dining_style": "Enjoys attentive service with personalized recommendations",
                 "preferences": [
-                  "Wine pairing with meals",
-                  "Attentive service"
+                  "Wine pairing",
+                  "Special engagement setup"
                 ],
                 "avoid": [
                   "Overly vinegary dishes",
@@ -2396,17 +2382,22 @@
               },
               "service_recommendations": [
                 {
-                  "recommendation": "Propose a wine pairing with the Chef's Tasting Menu, highlighting a Malbec option",
-                  "timing": "During menu presentation",
+                  "recommendation": "Greet Oscar warmly and confirm proposal arrangements",
+                  "timing": "Upon arrival",
                   "owner": "service"
                 },
                 {
-                  "recommendation": "Congratulate Oscar on the proposal and offer a complimentary toast or dessert",
-                  "timing": "After the proposal",
+                  "recommendation": "Congratulate the couple with a complimentary dessert or champagne",
+                  "timing": "During dessert",
                   "owner": "service"
                 }
               ],
-              "kitchen_notes": []
+              "kitchen_notes": [
+                {
+                  "note": "Include a Malbec in the wine pairing",
+                  "dish": "Chef's Tasting Menu"
+                }
+              ]
             }
           }
         }

@@ -39,6 +39,23 @@ class DinersList(BaseModel):
 
     @classmethod
     def load_from_json(cls, json_path: str) -> "DinersList":
+        """Load diners data from a JSON file
+        
+        This method:
+        1. Reads the JSON file
+        2. Converts string dates to datetime.date objects
+        3. Ensures all required fields exist (adding defaults if needed)
+        4. Validates the data against the Pydantic models
+        
+        The date conversion is necessary because JSON doesn't have a native date type.
+        The method also handles missing 'time' fields in reservations by adding a default value.
+        
+        Args:
+            json_path: Path to the JSON file containing diner data
+            
+        Returns:
+            A validated DinersList object
+        """
         print(f"Loading data from: {json_path}")
         
         with open(json_path) as f:

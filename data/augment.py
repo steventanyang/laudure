@@ -1,3 +1,7 @@
+"""
+Main script to run the restaurant data augmentation process.
+"""
+
 import os
 import sys
 from datetime import date
