@@ -11,6 +11,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import SkeletonAreaChart from "@/components/SkeletonAreaChart";
 import { CourseType, CourseOption } from "@/types";
 import { GiCupcake, GiMeal, GiChefToque } from "react-icons/gi";
 
@@ -57,24 +58,18 @@ export default function Volume() {
         setError(err instanceof Error ? err.message : "An error occurred");
         console.error(err);
       } finally {
-        setLoading(false);
+        // Add a slight delay to show the loading animation
+        setTimeout(() => {
+          setLoading(false);
+        }, 800);
       }
     }
 
     fetchData();
   }, []);
 
-  // Loading state
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">Loading volume data...</div>
-      </div>
-    );
-  }
-
   // Error state
-  if (error || !detailedData) {
+  if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-xl text-red-500">
@@ -84,16 +79,43 @@ export default function Volume() {
     );
   }
 
+  // If loading, show skeleton
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center p-8">
+        <SkeletonAreaChart />
+
+        {/* Course selection icons - disabled while loading */}
+        <div className="flex justify-center gap-12 mt-8">
+          {courseOptions.map((option) => (
+            <button
+              key={option.id}
+              disabled
+              className={`flex flex-col items-center p-4 rounded-lg transition-all ${
+                option.id === "mains"
+                  ? "bg-gray-800 text-white scale-110"
+                  : "bg-gray-200 text-gray-700"
+              } opacity-50`}
+            >
+              <div className="mb-2">{option.icon}</div>
+              <span className="font-bold">{option.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   // Get current detailed data based on selected course
   const currentData =
     selectedCourse === "appetizers"
-      ? detailedData.appetizersData
+      ? detailedData!.appetizersData
       : selectedCourse === "mains"
-      ? detailedData.mainsData
-      : detailedData.dessertsData;
+      ? detailedData!.mainsData
+      : detailedData!.dessertsData;
 
   // Get current color scheme
-  const currentColors = detailedData.colors[selectedCourse];
+  const currentColors = detailedData!.colors[selectedCourse];
 
   // Get item names for the selected course
   const itemNames = Object.keys(currentData[0]).filter((key) => key !== "time");
@@ -118,7 +140,7 @@ export default function Volume() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#333" />
                 <XAxis
                   dataKey="time"
-                  tick={{ fill: "#fff" }}
+                  tick={{ fill: "#fff", fontSize: 14, fontWeight: 500 }}
                   axisLine={{ stroke: "#444" }}
                   tickLine={{ stroke: "#444" }}
                 />

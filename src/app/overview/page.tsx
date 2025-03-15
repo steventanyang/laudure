@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import TreemapChart from "@/components/TreemapChart";
+import SkeletonTreemap from "@/components/SkeletonTreemap";
 import { CourseType, CourseOption, MealDataByCourse } from "@/types";
 
 // Icons for course selection
@@ -40,24 +41,18 @@ export default function Overview() {
         setError(err instanceof Error ? err.message : "An error occurred");
         console.error(err);
       } finally {
-        setLoading(false);
+        // Add a slight delay to show the loading animation
+        setTimeout(() => {
+          setLoading(false);
+        }, 800);
       }
     }
 
     fetchData();
   }, []);
 
-  // Loading state
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">Loading meal data...</div>
-      </div>
-    );
-  }
-
   // Error state
-  if (error || !mealData) {
+  if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-xl text-red-500">
@@ -72,7 +67,11 @@ export default function Overview() {
       <h1 className="text-2xl font-bold mb-8">Meal Orders Overview</h1>
 
       <div className="w-full max-w-5xl mb-10">
-        <TreemapChart data={mealData[selectedCourse]} />
+        {loading ? (
+          <SkeletonTreemap />
+        ) : (
+          <TreemapChart data={mealData![selectedCourse]} />
+        )}
       </div>
 
       {/* Course selection icons */}
@@ -86,6 +85,7 @@ export default function Overview() {
                 ? "bg-gray-800 text-white scale-110"
                 : "bg-gray-200 text-gray-700 hover:bg-gray-300"
             }`}
+            disabled={loading}
           >
             <div className="mb-2">{option.icon}</div>
             <span className="font-bold">{option.name}</span>
