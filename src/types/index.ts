@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 // Navigation types
 export interface NavItem {
   name: string;
@@ -33,4 +34,19 @@ export interface TreemapNodeDatum extends d3.HierarchyNode<MealData> {
   y0: number;
   y1: number;
   data: MealData;
+}
+
+// Course selection types
+export type CourseType = "appetizers" | "mains" | "desserts";
+
+export interface CourseOption {
+  id: CourseType;
+  name: string;
+  icon: ReactNode;
+}
+
+export interface MealDataByCourse {
+  appetizers: MealData[];
+  mains: MealData[];
+  desserts: MealData[];
 }
