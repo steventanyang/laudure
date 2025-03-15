@@ -42,3 +42,7 @@ next-env.d.ts
 
 # cursor
 *.txt
+
+# data
+data/.venv
+data/scripts/__pycache__
