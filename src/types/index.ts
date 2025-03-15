@@ -42,11 +42,46 @@ export type CourseType = "appetizers" | "mains" | "desserts";
 export interface CourseOption {
   id: CourseType;
   name: string;
-  icon: ReactNode;
+  titleIcon: ReactNode;
+  icon: (isSelected: boolean) => ReactNode;
 }
 
 export interface MealDataByCourse {
   appetizers: MealData[];
   mains: MealData[];
   desserts: MealData[];
+}
+
+// Volume chart types
+export interface DetailedVolumeData {
+  appetizersData: Record<string, string | number>[];
+  mainsData: Record<string, string | number>[];
+  dessertsData: Record<string, string | number>[];
+  colors: {
+    appetizers: string[];
+    mains: string[];
+    desserts: string[];
+  };
+}
+
+// Timeline types
+export type RequestStatus = "urgent" | "attention" | "normal";
+
+export interface SpecialRequest {
+  id: number;
+  time: string;
+  people: number;
+  status: RequestStatus;
+  isVIP: boolean;
+  isCelebration: boolean;
+}
+
+export interface TimelineGroup {
+  [time: string]: SpecialRequest[];
+}
+
+export interface StatusColors {
+  urgent: string;
+  attention: string;
+  normal: string;
 }

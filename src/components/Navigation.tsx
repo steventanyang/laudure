@@ -62,10 +62,10 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="relative flex justify-center w-full bg-black text-white pt-8">
-      <div className="flex justify-center w-full max-w-4xl">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/40 backdrop-blur-sm py-4 px-8">
+      <div className="flex justify-center w-full">
         <div
-          className="relative flex justify-between w-full"
+          className="relative flex justify-center w-full max-w-4xl"
           ref={navContainerRef}
         >
           {/* Background indicator that moves */}
@@ -81,7 +81,7 @@ export default function Navigation() {
               ref={(el) => {
                 if (el) navRefs.current[index] = el;
               }}
-              className={`py-4 px-8 text-center transition-colors relative z-10 font-bold ${
+              className={`py-4 px-12 text-center transition-colors relative z-10 font-bold ${
                 activeTab === item.path
                   ? "text-white"
                   : "text-gray-400 hover:text-gray-200"

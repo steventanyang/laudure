@@ -5,9 +5,6 @@ import TreemapChart from "@/components/TreemapChart";
 import SkeletonTreemap from "@/components/SkeletonTreemap";
 import { CourseType, CourseOption, MealDataByCourse } from "@/types";
 
-// Icons for course selection
-import { GiCupcake, GiMeal, GiChefToque } from "react-icons/gi";
-
 export default function Overview() {
   // State for meal data
   const [mealData, setMealData] = useState<MealDataByCourse | null>(null);
@@ -17,11 +14,104 @@ export default function Overview() {
   // State to track the selected course
   const [selectedCourse, setSelectedCourse] = useState<CourseType>("mains");
 
-  // Course options with icons
+  // Updated course options with larger SVGs
   const courseOptions: CourseOption[] = [
-    { id: "appetizers", name: "Appetizers", icon: <GiChefToque size={32} /> },
-    { id: "mains", name: "Main Courses", icon: <GiMeal size={32} /> },
-    { id: "desserts", name: "Desserts", icon: <GiCupcake size={32} /> },
+    {
+      id: "appetizers",
+      name: "Appetizers",
+      titleIcon: (
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 40 40"
+          className="inline-block mr-2 mb-1"
+        >
+          <polygon
+            points="20,5 38,35 2,35"
+            fill="white"
+            stroke="white"
+            strokeWidth="2"
+          />
+        </svg>
+      ),
+      icon: (isSelected) => (
+        <svg width="50" height="50" viewBox="0 0 40 40">
+          <polygon
+            points="20,5 38,35 2,35"
+            fill={isSelected ? "white" : "#333"}
+            stroke={isSelected ? "white" : "#333"}
+            strokeWidth="2"
+            className="transition-all duration-300"
+          />
+        </svg>
+      ),
+    },
+    {
+      id: "mains",
+      name: "Main Courses",
+      titleIcon: (
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 30 30"
+          className="inline-block mr-2 mb-1"
+        >
+          <rect
+            x="3"
+            y="3"
+            width="24"
+            height="24"
+            fill="white"
+            stroke="white"
+            strokeWidth="2"
+          />
+        </svg>
+      ),
+      icon: (isSelected) => (
+        <svg width="50" height="50" viewBox="0 0 30 30">
+          <rect
+            x="3"
+            y="3"
+            width="24"
+            height="24"
+            fill={isSelected ? "white" : "#333"}
+            stroke={isSelected ? "white" : "#333"}
+            strokeWidth="2"
+            className="transition-all duration-300"
+          />
+        </svg>
+      ),
+    },
+    {
+      id: "desserts",
+      name: "Desserts",
+      titleIcon: (
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 30 30"
+          className="inline-block mr-2 mb-1"
+        >
+          <polygon
+            points="15,2 28,11 23,28 7,28 2,11"
+            fill="white"
+            stroke="white"
+            strokeWidth="2"
+          />
+        </svg>
+      ),
+      icon: (isSelected) => (
+        <svg width="50" height="50" viewBox="0 0 30 30">
+          <polygon
+            points="15,2 28,11 23,28 7,28 2,11"
+            fill={isSelected ? "white" : "#333"}
+            stroke={isSelected ? "white" : "#333"}
+            strokeWidth="2"
+            className="transition-all duration-300"
+          />
+        </svg>
+      ),
+    },
   ];
 
   // Fetch data from API
@@ -63,8 +153,14 @@ export default function Overview() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-8">
-      <h1 className="text-2xl font-bold mb-8">Meal Orders Overview</h1>
+    <div className="min-h-screen flex flex-col items-center p-8 pt-30">
+      <h1 className="text-2xl font-bold mb-8">
+        {
+          courseOptions.find((option) => option.id === selectedCourse)
+            ?.titleIcon
+        }
+        {courseOptions.find((option) => option.id === selectedCourse)?.name}
+      </h1>
 
       <div className="w-full max-w-5xl mb-10">
         {loading ? (
@@ -74,24 +170,28 @@ export default function Overview() {
         )}
       </div>
 
-      {/* Course selection icons */}
-      <div className="flex justify-center gap-12 mt-4">
-        {courseOptions.map((option) => (
-          <button
-            key={option.id}
-            onClick={() => setSelectedCourse(option.id)}
-            className={`flex flex-col items-center p-4 rounded-lg transition-all ${
-              selectedCourse === option.id
-                ? "bg-gray-800 text-white scale-110"
-                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-            }`}
-            disabled={loading}
-          >
-            <div className="mb-2">{option.icon}</div>
-            <span className="font-bold">{option.name}</span>
-          </button>
-        ))}
-      </div>
+      {/* Course selection icons - hidden while loading */}
+      {!loading && (
+        <div className="flex justify-center gap-16 mt-4">
+          {courseOptions.map((option) => (
+            <button
+              key={option.id}
+              onClick={() => setSelectedCourse(option.id)}
+              className="flex flex-col items-center transition-all"
+            >
+              <div
+                className={`p-5 rounded-md ${
+                  selectedCourse === option.id
+                    ? "scale-110 filter drop-shadow-glow"
+                    : "hover:scale-105"
+                } transition-all duration-300`}
+              >
+                {option.icon(selectedCourse === option.id)}
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

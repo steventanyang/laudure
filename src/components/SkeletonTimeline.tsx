@@ -15,13 +15,6 @@ export default function SkeletonTimeline() {
     "22:00",
   ];
 
-  // Muted status colors for the skeleton
-  const skeletonStatusColors = [
-    "border-red-800/40 bg-red-950/20",
-    "border-amber-800/40 bg-amber-950/20",
-    "border-green-800/40 bg-green-950/20",
-  ];
-
   // Helper function to determine if a time should be on the left or right
   const isLeftSide = (time: string) => {
     // Times ending in :00 are on the left, times ending in :30 are on the right
@@ -62,11 +55,7 @@ export default function SkeletonTimeline() {
                           : "justify-end pl-[52%]"
                       }`}
                     >
-                      <Card
-                        className={`w-full p-4 backdrop-blur-sm border ${
-                          skeletonStatusColors[i % skeletonStatusColors.length]
-                        }`}
-                      >
+                      <Card className="w-full p-4 backdrop-blur-sm border border-gray-800/60 bg-gray-800/30">
                         <div className="flex items-center">
                           {/* Status indicator - more muted */}
                           <div
@@ -74,7 +63,7 @@ export default function SkeletonTimeline() {
                           ></div>
 
                           {/* People count - matching the actual page */}
-                          <div className="text-xl font-bold mr-3 bg-gray-700/60 w-6 h-6 rounded-md"></div>
+                          <div className="h-8 w-8 bg-gray-700/60 rounded-md mr-3"></div>
 
                           <div className="flex space-x-2 ml-auto">
                             <div className="w-5 h-5 bg-gray-700/50 rounded-full"></div>

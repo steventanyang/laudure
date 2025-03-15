@@ -12,19 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import SkeletonAreaChart from "@/components/SkeletonAreaChart";
-import { CourseType, CourseOption } from "@/types";
-import { GiCupcake, GiMeal, GiChefToque } from "react-icons/gi";
-
-interface DetailedVolumeData {
-  appetizersData: Record<string, string | number>[];
-  mainsData: Record<string, string | number>[];
-  dessertsData: Record<string, string | number>[];
-  colors: {
-    appetizers: string[];
-    mains: string[];
-    desserts: string[];
-  };
-}
+import { CourseOption, DetailedVolumeData } from "@/types";
 
 export default function Volume() {
   const [detailedData, setDetailedData] = useState<DetailedVolumeData | null>(
@@ -32,13 +20,107 @@ export default function Volume() {
   );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedCourse, setSelectedCourse] = useState<CourseType>("mains");
+  const [selectedCourse, setSelectedCourse] =
+    useState<CourseOption["id"]>("mains");
 
-  // Course options with icons (same as Overview page)
+  // Updated course options with larger SVGs
   const courseOptions: CourseOption[] = [
-    { id: "appetizers", name: "Appetizers", icon: <GiChefToque size={32} /> },
-    { id: "mains", name: "Main Courses", icon: <GiMeal size={32} /> },
-    { id: "desserts", name: "Desserts", icon: <GiCupcake size={32} /> },
+    {
+      id: "appetizers",
+      name: "Appetizers",
+      titleIcon: (
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 40 40"
+          className="inline-block mr-2 mb-1"
+        >
+          <polygon
+            points="20,5 38,35 2,35"
+            fill="white"
+            stroke="white"
+            strokeWidth="2"
+          />
+        </svg>
+      ),
+      icon: (isSelected) => (
+        <svg width="50" height="50" viewBox="0 0 40 40">
+          <polygon
+            points="20,5 38,35 2,35"
+            fill={isSelected ? "white" : "#333"}
+            stroke={isSelected ? "white" : "#333"}
+            strokeWidth="2"
+            className="transition-all duration-300"
+          />
+        </svg>
+      ),
+    },
+    {
+      id: "mains",
+      name: "Main Courses",
+      titleIcon: (
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 30 30"
+          className="inline-block mr-2 mb-1"
+        >
+          <rect
+            x="3"
+            y="3"
+            width="24"
+            height="24"
+            fill="white"
+            stroke="white"
+            strokeWidth="2"
+          />
+        </svg>
+      ),
+      icon: (isSelected) => (
+        <svg width="50" height="50" viewBox="0 0 30 30">
+          <rect
+            x="3"
+            y="3"
+            width="24"
+            height="24"
+            fill={isSelected ? "white" : "#333"}
+            stroke={isSelected ? "white" : "#333"}
+            strokeWidth="2"
+            className="transition-all duration-300"
+          />
+        </svg>
+      ),
+    },
+    {
+      id: "desserts",
+      name: "Desserts",
+      titleIcon: (
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 30 30"
+          className="inline-block mr-2 mb-1"
+        >
+          <polygon
+            points="15,2 28,11 23,28 7,28 2,11"
+            fill="white"
+            stroke="white"
+            strokeWidth="2"
+          />
+        </svg>
+      ),
+      icon: (isSelected) => (
+        <svg width="50" height="50" viewBox="0 0 30 30">
+          <polygon
+            points="15,2 28,11 23,28 7,28 2,11"
+            fill={isSelected ? "white" : "#333"}
+            stroke={isSelected ? "white" : "#333"}
+            strokeWidth="2"
+            className="transition-all duration-300"
+          />
+        </svg>
+      ),
+    },
   ];
 
   // Fetch data from API
@@ -82,25 +164,9 @@ export default function Volume() {
   // If loading, show skeleton
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center p-8">
-        <SkeletonAreaChart />
-
-        {/* Course selection icons - disabled while loading */}
-        <div className="flex justify-center gap-12 mt-8">
-          {courseOptions.map((option) => (
-            <button
-              key={option.id}
-              disabled
-              className={`flex flex-col items-center p-4 rounded-lg transition-all ${
-                option.id === "mains"
-                  ? "bg-gray-800 text-white scale-110"
-                  : "bg-gray-200 text-gray-700"
-              } opacity-50`}
-            >
-              <div className="mb-2">{option.icon}</div>
-              <span className="font-bold">{option.name}</span>
-            </button>
-          ))}
+      <div className="pt-24 pb-8 px-8">
+        <div className="flex flex-col items-center">
+          <SkeletonAreaChart />
         </div>
       </div>
     );
@@ -121,92 +187,111 @@ export default function Volume() {
   const itemNames = Object.keys(currentData[0]).filter((key) => key !== "time");
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-8">
-      {/* Main Chart Card */}
-      <Card className="w-full max-w-5xl bg-black border-gray-800">
-        <CardHeader className="flex flex-col items-center">
-          <CardTitle className="text-2xl font-bold text-white">
-            {courseOptions.find((o) => o.id === selectedCourse)?.name} Orders by
-            Time
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="h-[500px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart
-                data={currentData}
-                margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                <XAxis
-                  dataKey="time"
-                  tick={{ fill: "#fff", fontSize: 14, fontWeight: 500 }}
-                  axisLine={{ stroke: "#444" }}
-                  tickLine={{ stroke: "#444" }}
-                />
-                <YAxis
-                  tick={{ fill: "#fff" }}
-                  axisLine={{ stroke: "#444" }}
-                  tickLine={{ stroke: "#444" }}
-                />
-                <Tooltip
-                  formatter={(value, name) => [`${value} orders`, name]}
-                  labelFormatter={(label) => `Time: ${label}`}
-                  contentStyle={{
-                    backgroundColor: "#222",
-                    borderColor: "#444",
+    <div className="pt-24 pb-8 px-8">
+      <div className="flex flex-col items-center">
+        {/* Main Chart Card */}
+        <Card className="w-full max-w-5xl bg-black border-0">
+          <CardHeader className="flex flex-col items-center">
+            <CardTitle className="text-2xl font-bold text-white">
+              {courseOptions.find((o) => o.id === selectedCourse)?.titleIcon}
+              {courseOptions.find((o) => o.id === selectedCourse)?.name}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {loading ? (
+              <SkeletonAreaChart />
+            ) : (
+              <div className="h-[500px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart
+                    data={currentData}
+                    margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                    <XAxis
+                      dataKey="time"
+                      tick={{
+                        fill: "#aaa",
+                        fontSize: 16,
+                        fontWeight: 500,
+                        dy: 10,
+                      }}
+                      axisLine={{ stroke: "#444" }}
+                      tickLine={{ stroke: "#444" }}
+                    />
+                    <YAxis
+                      tick={{ fill: "#aaa" }}
+                      axisLine={{ stroke: "#444" }}
+                      tickLine={{ stroke: "#444" }}
+                    />
+                    <Tooltip
+                      formatter={(value, name) => [`${value} orders`, name]}
+                      labelFormatter={(label) => `Time: ${label}`}
+                      contentStyle={{
+                        backgroundColor: "#222",
+                        borderColor: "#444",
+                      }}
+                      itemStyle={{ color: "#fff" }}
+                      labelStyle={{ color: "#fff" }}
+                    />
+                    {itemNames.map((item, index) => (
+                      <Area
+                        key={item}
+                        type="monotone"
+                        dataKey={item}
+                        stackId="1"
+                        stroke={currentColors[index % currentColors.length]}
+                        fill={currentColors[index % currentColors.length]}
+                        name={item}
+                      />
+                    ))}
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Custom Legend - only shown when not loading */}
+        {!loading && (
+          <div className="flex flex-wrap justify-center gap-4 mt-2 mb-6 max-w-4xl">
+            {itemNames.map((item, index) => (
+              <div key={item} className="flex items-center mr-4 mb-2">
+                <div
+                  className="w-4 h-4 mr-2"
+                  style={{
+                    backgroundColor:
+                      currentColors[index % currentColors.length],
                   }}
-                  itemStyle={{ color: "#fff" }}
-                  labelStyle={{ color: "#fff" }}
-                />
-                {itemNames.map((item, index) => (
-                  <Area
-                    key={item}
-                    type="monotone"
-                    dataKey={item}
-                    stackId="1"
-                    stroke={currentColors[index % currentColors.length]}
-                    fill={currentColors[index % currentColors.length]}
-                    name={item}
-                  />
-                ))}
-              </AreaChart>
-            </ResponsiveContainer>
+                ></div>
+                <span className="text-sm text-white">{item}</span>
+              </div>
+            ))}
           </div>
-        </CardContent>
-      </Card>
+        )}
 
-      {/* Custom Legend */}
-      <div className="flex flex-wrap justify-center gap-4 mt-6 mb-6 max-w-4xl">
-        {itemNames.map((item, index) => (
-          <div key={item} className="flex items-center mr-4 mb-2">
-            <div
-              className="w-4 h-4 mr-2"
-              style={{
-                backgroundColor: currentColors[index % currentColors.length],
-              }}
-            ></div>
-            <span className="text-sm text-white">{item}</span>
+        {/* Geometric shape course selection - only shown when not loading */}
+        {!loading && (
+          <div className="flex justify-center gap-16 mt-6">
+            {courseOptions.map((option) => (
+              <button
+                key={option.id}
+                onClick={() => setSelectedCourse(option.id)}
+                className="flex flex-col items-center transition-all"
+              >
+                <div
+                  className={`p-5 rounded-md ${
+                    selectedCourse === option.id
+                      ? "scale-110 filter drop-shadow-glow"
+                      : "hover:scale-105"
+                  } transition-all duration-300`}
+                >
+                  {option.icon(selectedCourse === option.id)}
+                </div>
+              </button>
+            ))}
           </div>
-        ))}
-      </div>
-
-      {/* Course selection icons */}
-      <div className="flex justify-center gap-12 mt-2">
-        {courseOptions.map((option) => (
-          <button
-            key={option.id}
-            onClick={() => setSelectedCourse(option.id)}
-            className={`flex flex-col items-center p-4 rounded-lg transition-all ${
-              selectedCourse === option.id
-                ? "bg-gray-800 text-white scale-110"
-                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-            }`}
-          >
-            <div className="mb-2">{option.icon}</div>
-            <span className="font-bold">{option.name}</span>
-          </button>
-        ))}
+        )}
       </div>
     </div>
   );
