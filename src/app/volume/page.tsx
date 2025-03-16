@@ -11,6 +11,7 @@
  * - Item highlighting on hover for detailed analysis
  * - Special visualization for Chef's Tasting Menu with iridescent gradient
  * - Responsive design that adapts to different screen sizes
+ * - Client-side caching to improve navigation performance
  *
  * Components:
  * - AreaChart from Recharts library for data visualization
@@ -19,10 +20,11 @@
  * - Interactive color legend for individual menu items
  *
  * Data Flow:
- * 1. Fetches detailed volume data from /api/volume-data
- * 2. Processes data for the selected course category
- * 3. Renders stacked area chart with appropriate colors and gradients
- * 4. Provides interactive elements for data exploration
+ * 1. Checks localStorage cache for existing data
+ * 2. Fetches detailed volume data from /api/volume-data if cache miss or expired
+ * 3. Processes data for the selected course category
+ * 4. Renders stacked area chart with appropriate colors and gradients
+ * 5. Provides interactive elements for data exploration
  */
 
 "use client";
@@ -42,6 +44,8 @@ import SkeletonAreaChart from "@/components/SkeletonAreaChart";
 import { DetailedVolumeData, CourseOption } from "@/types";
 // Import the centralized course options
 import { courseOptions } from "@/components/CourseOptions";
+// Import cache utilities
+import { getCachedData, setCachedData, CACHE_KEYS } from "@/lib/cache-utils";
 
 export default function Volume() {
   const [detailedData, setDetailedData] = useState<DetailedVolumeData | null>(
@@ -53,13 +57,26 @@ export default function Volume() {
     useState<CourseOption["id"]>("mains");
   const [highlightedItem, setHighlightedItem] = useState<string | null>(null);
 
-  // Removed duplicated courseOptions array - now imported from centralized component
-
-  // Fetch data from API
+  // Fetch data from API with caching
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
+
+        // Check cache first
+        const cachedData = getCachedData<DetailedVolumeData>(
+          CACHE_KEYS.VOLUME_DATA
+        );
+
+        if (cachedData) {
+          console.log("Using cached volume data");
+          setDetailedData(cachedData);
+          setLoading(false);
+          return;
+        }
+
+        // Cache miss - fetch from API
+        console.log("Fetching fresh volume data");
         const response = await fetch("/api/volume-data");
 
         if (!response.ok) {
@@ -67,6 +84,10 @@ export default function Volume() {
         }
 
         const data = await response.json();
+
+        // Cache the data
+        setCachedData(CACHE_KEYS.VOLUME_DATA, data);
+
         setDetailedData(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
@@ -118,9 +139,11 @@ export default function Volume() {
     [];
 
   // Get item names for the selected course - fix type error by filtering out non-string keys
-  const itemNames = Object.keys(currentData[0]).filter(
-    (key) => key !== "time" && typeof currentData[0][key] === "number"
-  );
+  const itemNames = currentData
+    ? Object.keys(currentData[0]).filter(
+        (key) => key !== "time" && typeof currentData[0][key] === "number"
+      )
+    : [];
 
   // Get the current title text based on highlighted item or selected course
   const getTitleText = () => {

@@ -12,6 +12,7 @@
  * - Filtering system for time slots, status levels, and special request tags
  * - Navigation between reservations with keyboard support
  * - Print functionality for physical kitchen reference
+ * - Client-side caching to improve navigation performance
  *
  * Components:
  * - TimeSection: Renders a section of the timeline for a specific time slot
@@ -21,10 +22,11 @@
  * - PrintReservations: Generates printable version of filtered reservations
  *
  * Data Flow:
- * 1. Fetches reservation data from /api/timeline-data
- * 2. Groups and sorts reservations by time and priority
- * 3. Applies user-selected filters
- * 4. Renders timeline with interactive elements
+ * 1. Checks localStorage cache for existing data
+ * 2. Fetches reservation data from /api/timeline-data if cache miss or expired
+ * 3. Groups and sorts reservations by time and priority
+ * 4. Applies user-selected filters
+ * 5. Renders timeline with interactive elements
  */
 
 "use client";
@@ -52,6 +54,8 @@ import PrintReservations from "@/components/PrintReservations";
 // Import our new component - removed ReservationCard since it's not used directly
 import TimeSection from "@/components/timeline/TimeSection";
 import DetailPanel from "@/components/timeline/DetailPanel";
+// Import cache utilities
+import { getCachedData, setCachedData, CACHE_KEYS } from "@/lib/cache-utils";
 
 // Define tag types and their corresponding icons
 const requestTagIcons: Record<string, { icon: IconType; label: string }> = {
@@ -88,13 +92,30 @@ export default function Special() {
     day: "numeric",
   });
 
-  // Fetch kitchen notes data
+  // Fetch kitchen notes data with caching
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         const startTime = Date.now();
 
+        // Check cache first
+        const cachedData = getCachedData<ReservationDetail[]>(
+          CACHE_KEYS.TIMELINE_DATA
+        );
+
+        if (cachedData) {
+          console.log("Using cached timeline data");
+          setReservations(cachedData);
+          setFilteredReservations(cachedData);
+
+          // Immediately set loading to false for cached data
+          setLoading(false);
+          return;
+        }
+
+        // Cache miss - fetch from API
+        console.log("Fetching fresh timeline data");
         const response = await fetch("/api/timeline-data");
 
         if (!response.ok) {
@@ -102,10 +123,14 @@ export default function Special() {
         }
 
         const data = await response.json();
+
+        // Cache the data
+        setCachedData(CACHE_KEYS.TIMELINE_DATA, data);
+
         setReservations(data);
         setFilteredReservations(data);
 
-        // Ensure loading state shows for at least 500ms
+        // Ensure loading state shows for at least 500ms for fresh data only
         const elapsedTime = Date.now() - startTime;
         const remainingTime = Math.max(0, 500 - elapsedTime);
 

@@ -10,6 +10,7 @@
  * - Course selection (appetizers, mains, desserts) with smooth transitions
  * - Color-coded representation with proportional sizing based on order count
  * - Animated transitions between different course views
+ * - Client-side caching to improve navigation performance
  *
  * Components:
  * - TreemapChart: Custom component for rendering the hierarchical data
@@ -18,10 +19,11 @@
  * - Framer Motion animations for smooth transitions
  *
  * Data Flow:
- * 1. Fetches menu analytics data from /api/menu-analytics
- * 2. Displays data for the selected course category
- * 3. Provides interactive elements for switching between courses
- * 4. Animates transitions for a polished user experience
+ * 1. Checks localStorage cache for existing data
+ * 2. Fetches menu analytics data from /api/menu-analytics if cache miss or expired
+ * 3. Displays data for the selected course category
+ * 4. Provides interactive elements for switching between courses
+ * 5. Animates transitions for a polished user experience
  */
 
 "use client";
@@ -33,6 +35,8 @@ import { CourseType, MealDataByCourse } from "@/types";
 import { motion, AnimatePresence } from "framer-motion";
 // Import the centralized course options
 import { courseOptions } from "@/components/CourseOptions";
+// Import cache utilities
+import { getCachedData, setCachedData, CACHE_KEYS } from "@/lib/cache-utils";
 
 export default function Overview() {
   // State for meal data
@@ -57,13 +61,26 @@ export default function Overview() {
     }, 100); // Reduced from 200ms
   };
 
-  // Removed duplicated courseOptions array - now imported from centralized component
-
-  // Fetch data from API
+  // Fetch data from API with caching
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
+
+        // Check cache first
+        const cachedData = getCachedData<MealDataByCourse>(
+          CACHE_KEYS.MENU_ANALYTICS
+        );
+
+        if (cachedData) {
+          console.log("Using cached menu analytics data");
+          setMealData(cachedData);
+          setLoading(false);
+          return;
+        }
+
+        // Cache miss - fetch from API
+        console.log("Fetching fresh menu analytics data");
         const response = await fetch("/api/menu-analytics");
 
         if (!response.ok) {
@@ -71,6 +88,10 @@ export default function Overview() {
         }
 
         const data = await response.json();
+
+        // Cache the data
+        setCachedData(CACHE_KEYS.MENU_ANALYTICS, data);
+
         setMealData(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
