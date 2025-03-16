@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { loadDinersData, getDetailedVolumeData } from "@/lib/data-utils";
+import { loadDinersData } from "@/lib/menu-utils";
+import { getDetailedVolumeData } from "@/lib/volume-utils";
 
 export async function GET() {
   try {

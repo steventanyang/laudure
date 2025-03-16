@@ -174,10 +174,29 @@ Create a consolidated briefing in the following JSON format:
         {"recommendation": "specific action", "timing": "when in service", "owner": "who should do this"}
     ],
     "kitchen_notes": [
-        {"note": "specific preparation detail", "dish": "affected dish"}
+        {
+            "note": "specific preparation detail", 
+            "dish": "affected dish",
+            "tags": ["tag1", "tag2"],
+            "urgency": "red/orange/green"
+        }
     ]
 }
 ```
+
+For kitchen_notes, include tags from this predefined list based on the reservation:
+- "dairy free" (urgency: red) - For any dairy allergies or restrictions
+- "gluten free" (urgency: red) - For any gluten allergies or restrictions
+- "nut free" (urgency: red) - For any nut allergies or restrictions
+- "critic" (urgency: orange) - If the guest is a known food critic or influential
+- "prop" (urgency: red) - For any special props or items that need to be prepared
+- "adjust dish" (urgency: green) - For flavor adjustments, spice level, etc.
+- "special request" (urgency: orange) - New dish requests or special add-ons
+
+The urgency levels indicate priority:
+- red: highest priority, critical for guest safety or experience
+- orange: medium priority, important for guest satisfaction
+- green: lower priority, enhances guest experience
 
 Prioritize information that is:
 1. Safety-critical (allergies, accessibility)

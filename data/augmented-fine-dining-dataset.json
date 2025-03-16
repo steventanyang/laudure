@@ -1239,9 +1239,9 @@
           "number_of_people": 2,
           "orders": [
             {
-              "item": "Rabbit Roulade",
+              "item": "Salmon en Papillote",
               "dietary_tags": [],
-              "price": 60.0
+              "price": 42.0
             }
           ],
           "time": "21:00"

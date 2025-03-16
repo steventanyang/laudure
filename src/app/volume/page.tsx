@@ -207,12 +207,16 @@ export default function Volume() {
                     data={currentData}
                     margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                    <CartesianGrid
+                      strokeDasharray="3 6"
+                      stroke="#222222"
+                      strokeOpacity={0.3}
+                    />
                     <XAxis
                       dataKey="time"
                       tick={{
                         fill: "#aaa",
-                        fontSize: 16,
+                        fontSize: 18,
                         fontWeight: 500,
                         dy: 10,
                       }}
@@ -258,13 +262,13 @@ export default function Volume() {
             {itemNames.map((item, index) => (
               <div key={item} className="flex items-center mr-4 mb-2">
                 <div
-                  className="w-4 h-4 mr-2"
+                  className="w-5 h-5 mr-2"
                   style={{
                     backgroundColor:
                       currentColors[index % currentColors.length],
                   }}
                 ></div>
-                <span className="text-sm text-white">{item}</span>
+                <span className="text-sm text-gray-400">{item}</span>
               </div>
             ))}
           </div>

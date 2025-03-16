@@ -66,6 +66,7 @@ export interface DetailedVolumeData {
 
 // Timeline types
 export type RequestStatus = "urgent" | "attention" | "normal";
+export type UrgencyColor = "red" | "orange" | "green";
 
 export interface SpecialRequest {
   id: number;
@@ -74,6 +75,24 @@ export interface SpecialRequest {
   status: RequestStatus;
   isVIP: boolean;
   isCelebration: boolean;
+  name?: string;
+  tags?: string[];
+}
+
+export interface KitchenNote {
+  note: string;
+  dish: string;
+  tags: string[];
+  urgency: UrgencyColor;
+}
+
+export interface ProcessedKitchenNote {
+  id: number;
+  time: string;
+  people: number;
+  status: RequestStatus;
+  name: string;
+  tags: string[];
 }
 
 export interface TimelineGroup {
@@ -84,4 +103,45 @@ export interface StatusColors {
   urgent: string;
   attention: string;
   normal: string;
+}
+
+export interface ReservationDetail {
+  id: number;
+  time: string;
+  date: string;
+  people: number;
+  status: RequestStatus;
+  name: string;
+  tags: string[];
+  // Additional details for expanded view
+  dishes: string[];
+  notes: KitchenNoteDetail[];
+  priorityAlerts?: PriorityAlert[];
+  guestProfile?: GuestProfile;
+  serviceRecommendations?: ServiceRecommendation[];
+}
+
+export interface KitchenNoteDetail {
+  note: string;
+  dish: string;
+  tags: string[];
+  urgency: UrgencyColor;
+}
+
+export interface PriorityAlert {
+  alert: string;
+  category: string;
+  for: string;
+}
+
+export interface GuestProfile {
+  dining_style: string;
+  preferences: string[];
+  avoid: string[];
+}
+
+export interface ServiceRecommendation {
+  recommendation: string;
+  timing: string;
+  owner: string;
 }
