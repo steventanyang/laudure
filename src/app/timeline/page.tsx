@@ -45,7 +45,7 @@ export default function Special() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/api/kitchen-notes");
+        const response = await fetch("/api/timeline-data");
 
         if (!response.ok) {
           throw new Error("Failed to fetch reservation details");

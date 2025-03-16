@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import {
   loadAgentAugmentedData,
   getReservationDetails,
-} from "@/lib/kitchen-utils";
+} from "@/lib/timeline-utils";
 
 export async function GET() {
   try {
