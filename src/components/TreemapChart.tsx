@@ -94,6 +94,7 @@ export default function TreemapChart({
       .data(root.leaves() as unknown as TreemapNodeDatum[])
       .enter()
       .append("g")
+      .attr("class", "cell")
       .attr("transform", (d) => `translate(${d.x0},${d.y0})`);
 
     // Add rectangles
@@ -103,21 +104,24 @@ export default function TreemapChart({
       .attr("height", (d) => d.y1 - d.y0)
       .attr("fill", (d) => d.data.color)
       .attr("rx", 10)
-      .attr("ry", 10);
+      .attr("ry", 10)
+      .attr("class", "cell-rect")
+      .style("transition", "opacity 0.25s ease-in-out");
 
     // Add meal name text - handle multi-line text for long names
     cell.each(function (d: TreemapNodeDatum) {
       const cellWidth = d.x1 - d.x0;
-      // const cellHeight = d.y1 - d.y0;
       const name = d.data.name;
 
       // Create text element
       const textElement = d3
         .select(this)
         .append("text")
+        .attr("class", "cell-text")
         .attr("font-size", "22px")
         .attr("font-weight", "800")
-        .attr("fill", darkenColor(d.data.color));
+        .attr("fill", darkenColor(d.data.color))
+        .style("transition", "opacity 0.25s ease-in-out");
 
       // Split long names into multiple lines if needed
       if (name.includes(" ") && cellWidth < 180) {
@@ -137,13 +141,29 @@ export default function TreemapChart({
     // Add count text
     cell
       .append("text")
+      .attr("class", "cell-count")
       .attr("x", (d) => d.x1 - d.x0 - 30)
       .attr("y", (d) => d.y1 - d.y0 - 25)
       .attr("text-anchor", "end")
       .attr("font-size", "40px")
       .attr("font-weight", "900")
       .attr("fill", (d) => darkenColor(d.data.color))
-      .text((d) => d.data.count);
+      .text((d) => d.data.count)
+      .style("transition", "opacity 0.25s ease-in-out");
+
+    // Add hover effects - simplified to just opacity changes
+    cell
+      .on("mouseenter", function () {
+        // Dim all other cells
+        d3.selectAll(".cell").transition().duration(250).style("opacity", 0.4);
+
+        // Highlight this cell
+        d3.select(this).transition().duration(250).style("opacity", 1);
+      })
+      .on("mouseleave", function () {
+        // Restore all cells
+        d3.selectAll(".cell").transition().duration(250).style("opacity", 1);
+      });
   }, [data, dimensions]);
 
   return (

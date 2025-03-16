@@ -17,20 +17,44 @@ export async function loadDinersData(): Promise<DinersList> {
 // Process data to get menu item counts
 export function getMenuAnalytics(data: DinersList): MenuAnalytics {
   const itemCounts: Record<string, number> = {};
+  let chefsTastingMenuCount = 0;
 
-  // Count occurrences of each menu item
+  // Count occurrences of each menu item, accounting for party size
   data.diners.forEach((diner) => {
     diner.reservations?.forEach((reservation) => {
+      // Get number of people (default to 1 if not specified)
+      const numberOfPeople = reservation.number_of_people || 1;
+
       reservation.orders.forEach((order) => {
         const item = order.item;
-        if (item !== "Chef's Tasting Menu") {
-          itemCounts[item] = (itemCounts[item] || 0) + 1;
+        if (item === "Chef's Tasting Menu") {
+          // Multiply by number of people
+          chefsTastingMenuCount += numberOfPeople;
+        } else {
+          // Add number of people to the count instead of just 1
+          itemCounts[item] = (itemCounts[item] || 0) + numberOfPeople;
         }
       });
     });
   });
 
-  // Organize counts by category
+  // Distribute Chef's Tasting Menu counts across all dishes
+  if (chefsTastingMenuCount > 0) {
+    // Add 0.2 to each dish for every person who ordered Chef's Tasting Menu
+    const allMenuItems = [
+      ...menuCategories.appetizers,
+      ...menuCategories.mains,
+      ...menuCategories.desserts,
+    ];
+
+    allMenuItems.forEach((item) => {
+      if (itemCounts[item] !== undefined) {
+        itemCounts[item] += chefsTastingMenuCount * 0.2;
+      }
+    });
+  }
+
+  // Organize counts by category and round up any decimal values
   const result: MenuAnalytics = {
     appetizers: [],
     mains: [],
@@ -42,7 +66,7 @@ export function getMenuAnalytics(data: DinersList): MenuAnalytics {
     if (itemCounts[item]) {
       result.appetizers.push({
         name: item,
-        count: itemCounts[item],
+        count: Math.ceil(itemCounts[item]), // Round up decimal values
       });
     }
   });
@@ -52,7 +76,7 @@ export function getMenuAnalytics(data: DinersList): MenuAnalytics {
     if (itemCounts[item]) {
       result.mains.push({
         name: item,
-        count: itemCounts[item],
+        count: Math.ceil(itemCounts[item]), // Round up decimal values
       });
     }
   });
@@ -62,7 +86,7 @@ export function getMenuAnalytics(data: DinersList): MenuAnalytics {
     if (itemCounts[item]) {
       result.desserts.push({
         name: item,
-        count: itemCounts[item],
+        count: Math.ceil(itemCounts[item]), // Round up decimal values
       });
     }
   });
@@ -95,4 +119,4 @@ export function addColorsToMenuAnalytics(
   }));
 
   return result;
-} 
+}
