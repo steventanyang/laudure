@@ -40,6 +40,12 @@ export default function Special() {
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
+  // At the top of the component, simplify the date format
+  const today = new Date().toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+  });
+
   // Fetch kitchen notes data
   useEffect(() => {
     const fetchData = async () => {
@@ -154,7 +160,7 @@ export default function Special() {
   return (
     <div className="pt-28 pb-8 px-8 relative overflow-hidden scrollbar-hide">
       <div className="flex flex-col items-center">
-        <h1 className="text-2xl font-bold mb-8">Timeline</h1>
+        <h1 className="text-2xl font-bold mb-8">{today}</h1>
 
         {loading ? (
           <SkeletonTimeline />
@@ -167,16 +173,33 @@ export default function Special() {
             <div className="relative">
               {times.map((time) => (
                 <div key={time} className="mb-10 relative">
-                  {/* Time marker - now above circle and centered */}
-                  <div className="absolute top-[-25px] left-1/2 transform -translate-x-1/2 text-lg font-semibold text-gray-500/80">
-                    {time}
-                  </div>
-
-                  {/* Timeline dot - darker color */}
+                  {/* Only keep the timeline dot */}
                   <div className="absolute left-1/2 top-2 w-3 h-3 bg-gray-400 rounded-full transform -translate-x-1/2 z-10"></div>
 
                   {/* Request cards */}
-                  <div className="py-6">
+                  <div className="py-6 relative">
+                    {/* Large time display in empty space - now brighter */}
+                    <div
+                      className={`absolute top-1/2 transform -translate-y-1/2 ${
+                        isLeftSide(time) ? "right-8" : "left-8"
+                      } ${
+                        isLeftSide(time) ? "text-right" : "text-left"
+                      } opacity-30 pointer-events-none`}
+                    >
+                      <div className="text-7xl font-bold text-gray-300">
+                        {time}
+                      </div>
+                      <div className="text-xl text-gray-400 mt-2">
+                        <span>
+                          {sortedTimeGroups[time].reduce(
+                            (total, req) => total + req.people,
+                            0
+                          )}{" "}
+                          guests • {sortedTimeGroups[time].length} tables
+                        </span>
+                      </div>
+                    </div>
+
                     {sortedTimeGroups[time].map((request) => (
                       <div
                         key={request.id}
@@ -187,12 +210,12 @@ export default function Special() {
                         }`}
                       >
                         <Card
-                          className={`w-full p-4 bg-opacity-20 backdrop-blur-sm cursor-pointer transition-all duration-200 hover:bg-opacity-30 ${
+                          className={`w-full p-4 bg-opacity-20 backdrop-blur-sm cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg hover:bg-opacity-30 ${
                             request.status === "urgent"
-                              ? "bg-red-950/30 border-red-700/40"
+                              ? "bg-red-950/30 border-red-700/40 hover:border-red-600/60"
                               : request.status === "attention"
-                              ? "bg-amber-950/30 border-amber-700/40"
-                              : "bg-green-950/30 border-green-700/40"
+                              ? "bg-amber-950/30 border-amber-700/40 hover:border-amber-600/60"
+                              : "bg-green-950/30 border-green-700/40 hover:border-green-600/60"
                           } ${isAnimating ? "pointer-events-none" : ""}`}
                           onClick={() => handleReservationClick(request)}
                         >
