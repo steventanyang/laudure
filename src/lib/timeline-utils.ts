@@ -1,3 +1,22 @@
+/**
+ * Timeline Utilities
+ *
+ * This module provides utility functions for processing reservation and kitchen note data
+ * for the restaurant timeline visualization. It handles loading data from JSON files and
+ * transforming it into formats suitable for the timeline interface.
+ *
+ * Key functions:
+ * - loadAgentAugmentedData: Loads the AI-augmented dining dataset
+ * - getKitchenNotes: Extracts and processes kitchen notes from the dataset
+ * - getReservationDetails: Creates comprehensive reservation objects with all relevant details
+ *
+ * The module supports:
+ * - Extraction of kitchen notes with urgency levels
+ * - Aggregation of tags across multiple notes
+ * - Determination of reservation status based on note urgency
+ * - Sorting of data by time for chronological display
+ */
+
 import path from "path";
 import fs from "fs";
 import {

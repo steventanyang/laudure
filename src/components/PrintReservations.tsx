@@ -1,3 +1,28 @@
+/**
+ * PrintReservations Component
+ *
+ * This component provides print functionality for reservation data.
+ * It generates a print-friendly version of the reservations with all relevant details
+ * and triggers the browser's print dialog.
+ *
+ * Features:
+ * - Creates a hidden print-only container with optimized styles
+ * - Formats reservation data with clear visual hierarchy
+ * - Includes visual indicators for reservation status and dish categories
+ * - Supports special request highlighting based on urgency
+ * - Uses SVG shapes to indicate dish categories (matching the main UI)
+ *
+ * Props:
+ * - reservations: Array of reservation details to print
+ * - date: Current date string for the header
+ *
+ * Implementation:
+ * - Dynamically generates HTML content with embedded print styles
+ * - Injects content into a hidden container
+ * - Triggers browser print dialog
+ * - Handles dish categorization with appropriate visual indicators
+ */
+
 import { ReservationDetail } from "@/types";
 import { FaPrint } from "react-icons/fa";
 import { getDishCategoryAndColor } from "@/lib/utils";

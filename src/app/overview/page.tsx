@@ -1,3 +1,29 @@
+/**
+ * Overview Page
+ *
+ * This page provides a high-level visualization of menu item popularity using
+ * a treemap chart. It allows kitchen staff and management to quickly identify
+ * the most frequently ordered items within each course category.
+ *
+ * Features:
+ * - Interactive treemap visualization showing relative popularity of menu items
+ * - Course selection (appetizers, mains, desserts) with smooth transitions
+ * - Color-coded representation with proportional sizing based on order count
+ * - Animated transitions between different course views
+ *
+ * Components:
+ * - TreemapChart: Custom component for rendering the hierarchical data
+ * - SkeletonTreemap: Loading state placeholder
+ * - Course selection buttons with custom icons from CourseOptions
+ * - Framer Motion animations for smooth transitions
+ *
+ * Data Flow:
+ * 1. Fetches menu analytics data from /api/menu-analytics
+ * 2. Displays data for the selected course category
+ * 3. Provides interactive elements for switching between courses
+ * 4. Animates transitions for a polished user experience
+ */
+
 "use client";
 
 import { useState, useEffect } from "react";

@@ -1,3 +1,25 @@
+/**
+ * TimeSection Component
+ *
+ * This component renders a section of the timeline for a specific time slot.
+ * It displays a large time indicator and all reservations for that time.
+ *
+ * Features:
+ * - Alternating left/right layout based on time (00 minutes on left, 30 minutes on right)
+ * - Visual highlighting when the time is active
+ * - Renders reservation cards for each reservation at this time
+ * - Displays guest count and table count summary
+ *
+ * @param time - The time slot this section represents (e.g., "18:00")
+ * @param reservations - Array of reservation details for this time slot
+ * @param activeTime - Currently active/highlighted time (if any)
+ * @param selectedReservationId - ID of the currently selected reservation (if any)
+ * @param isAnimating - Whether animations are currently in progress
+ * @param onReservationClick - Callback function when a reservation is clicked
+ * @param refCallback - Callback to store a reference to the time display element
+ * @param requestTagIcons - Map of tag names to their icon components
+ */
+
 import { ReservationDetail } from "@/types";
 import ReservationCard from "@/components/timeline/ReservationCard";
 import { IconType } from "react-icons";

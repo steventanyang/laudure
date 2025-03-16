@@ -1,3 +1,22 @@
+/**
+ * Utility Functions
+ *
+ * This module provides common utility functions and constants used throughout the application.
+ * It includes class name merging utilities, menu category definitions, and color schemes
+ * for consistent visualization.
+ *
+ * Key functions:
+ * - cn: Merges class names using clsx and tailwind-merge
+ * - getDishCategoryAndColor: Determines the category and color for a given dish
+ *
+ * Constants:
+ * - menuCategories: Defines all menu items by category (appetizers, mains, desserts)
+ * - colorSchemes: Provides consistent color palettes for each menu category
+ *
+ * These utilities ensure consistent styling, categorization, and visualization
+ * across the application.
+ */
+
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 

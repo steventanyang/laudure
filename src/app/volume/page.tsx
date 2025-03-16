@@ -1,3 +1,30 @@
+/**
+ * Volume Page
+ *
+ * This page visualizes the volume of menu items ordered throughout service hours,
+ * providing insights into kitchen workload and timing patterns. It displays an
+ * interactive area chart showing the distribution of orders across time slots.
+ *
+ * Features:
+ * - Interactive stacked area chart showing order volume by time
+ * - Course selection (appetizers, mains, desserts) with visual indicators
+ * - Item highlighting on hover for detailed analysis
+ * - Special visualization for Chef's Tasting Menu with iridescent gradient
+ * - Responsive design that adapts to different screen sizes
+ *
+ * Components:
+ * - AreaChart from Recharts library for data visualization
+ * - SkeletonAreaChart for loading state
+ * - Course selection buttons with custom icons
+ * - Interactive color legend for individual menu items
+ *
+ * Data Flow:
+ * 1. Fetches detailed volume data from /api/volume-data
+ * 2. Processes data for the selected course category
+ * 3. Renders stacked area chart with appropriate colors and gradients
+ * 4. Provides interactive elements for data exploration
+ */
+
 "use client";
 
 import { useState, useEffect } from "react";

@@ -1,3 +1,22 @@
+/**
+ * SkeletonTimeline Component
+ *
+ * This component provides a loading placeholder for the timeline view.
+ * It displays a shimmer effect in the shape of the timeline layout to indicate
+ * that reservation data is being loaded.
+ *
+ * Features:
+ * - Mimics the actual timeline structure with time slots and cards
+ * - Alternates card positioning between left and right sides
+ * - Includes time indicators and timeline dots
+ * - Uses Shimmer component for animated loading effect
+ *
+ * Usage:
+ * - Display while fetching timeline data
+ * - Replace with actual timeline content when data is available
+ * - Also useful during filtering operations to indicate processing
+ */
+
 import { Card } from "@/components/ui/card";
 import { Shimmer } from "@/components/ui/shimmer";
 

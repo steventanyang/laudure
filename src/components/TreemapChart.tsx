@@ -1,3 +1,29 @@
+/**
+ * TreemapChart Component
+ *
+ * This component renders an interactive treemap visualization using D3.js.
+ * It displays hierarchical data with rectangles sized proportionally to their values,
+ * providing an intuitive visualization of menu item popularity.
+ *
+ * Features:
+ * - Responsive layout that adapts to container size
+ * - Interactive hover effects to highlight selected items
+ * - Automatic text wrapping for long item names
+ * - Custom styling with rounded corners and color theming
+ * - Smooth transitions for interactive elements
+ *
+ * Props:
+ * - data: Array of MealData objects with name, count, and color properties
+ * - width: Optional width override (defaults to container width)
+ * - height: Optional height override (defaults to proportional height)
+ *
+ * Implementation:
+ * - Uses D3.js for data visualization and DOM manipulation
+ * - Implements custom text handling for different rectangle sizes
+ * - Provides color manipulation for better text contrast
+ * - Handles window resizing for responsive behavior
+ */
+
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";

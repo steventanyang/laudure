@@ -1,3 +1,30 @@
+/**
+ * TimelineFilters Component
+ *
+ * This component provides a sliding filter panel for the timeline view.
+ * It allows users to filter reservations by time slots, special request tags,
+ * and status levels.
+ *
+ * Features:
+ * - Slide-in panel with smooth animations
+ * - Time slot selection with drag support for quick multi-selection
+ * - Special request tag filtering with icons
+ * - Status level filtering with color indicators
+ * - Reset and apply buttons for filter management
+ *
+ * Props:
+ * - times: Array of available time slots
+ * - requestTagIcons: Map of tag names to their icon components
+ * - isOpen: Boolean controlling panel visibility
+ * - onToggle: Callback to toggle panel visibility
+ * - onApplyFilters: Callback to apply selected filters
+ *
+ * State Management:
+ * - Tracks selected times, tags, and status levels
+ * - Supports drag selection for time slots
+ * - Provides select all functionality for tags
+ */
+
 import { useState, useEffect } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { IconType } from "react-icons";

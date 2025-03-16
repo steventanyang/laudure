@@ -1,3 +1,31 @@
+/**
+ * DetailPanel Component
+ *
+ * This component renders a sliding panel that displays detailed information
+ * about a selected reservation. It appears when a reservation card is clicked.
+ *
+ * Features:
+ * - Animated slide-in/out transitions
+ * - Displays reservation header with guest count and name
+ * - Shows all menu items with category-specific styling
+ * - Lists special requests with their tags and urgency indicators
+ * - Provides navigation between reservations
+ * - Status-based color coding (red, amber, green)
+ *
+ * Special styling:
+ * - Chef's Tasting Menu has unique gradient styling
+ * - Each dish shows an icon representing its category (appetizer, main, dessert)
+ * - Special requests are color-coded by urgency
+ *
+ * @param reservation - The reservation data to display in detail
+ * @param isPanelVisible - Whether the panel should be visible
+ * @param onClose - Callback function when the close button is clicked
+ * @param onNavigate - Callback function for navigating to previous/next reservation
+ * @param hasPrev - Whether there is a previous reservation to navigate to
+ * @param hasNext - Whether there is a next reservation to navigate to
+ * @param requestTagIcons - Map of tag names to their icon components
+ */
+
 import { ReservationDetail } from "@/types";
 import { FaTimes, FaChevronLeft } from "react-icons/fa";
 import { IconType } from "react-icons";
@@ -203,9 +231,7 @@ export default function DetailPanel({
               >
                 {/* Dish name with icons */}
                 <div className="flex items-center mb-2">
-                  <div className="text-sm text-gray-400 mr-2">
-                    {note.dish}
-                  </div>
+                  <div className="text-sm text-gray-400 mr-2">{note.dish}</div>
 
                   {/* Tag icons beside dish name */}
                   {note.tags && note.tags.length > 0 && (
@@ -263,14 +289,11 @@ export default function DetailPanel({
               }`}
             >
               Next
-              <FaChevronLeft
-                className="ml-2 transform rotate-180"
-                size={14}
-              />
+              <FaChevronLeft className="ml-2 transform rotate-180" size={14} />
             </button>
           </div>
         </div>
       </div>
     </div>
   );
-} 
+}

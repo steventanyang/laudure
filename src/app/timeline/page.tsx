@@ -1,3 +1,32 @@
+/**
+ * Timeline Page
+ *
+ * This page displays a chronological timeline of restaurant reservations with special requests
+ * and kitchen notes. It provides a visual representation of the dining service flow throughout
+ * the evening, highlighting reservations that require special attention.
+ *
+ * Features:
+ * - Interactive timeline with time-based sections (18:00, 18:30, etc.)
+ * - Visual indicators for reservation priority (urgent, attention, normal)
+ * - Detailed side panel for viewing complete reservation information
+ * - Filtering system for time slots, status levels, and special request tags
+ * - Navigation between reservations with keyboard support
+ * - Print functionality for physical kitchen reference
+ *
+ * Components:
+ * - TimeSection: Renders a section of the timeline for a specific time slot
+ * - DetailPanel: Shows detailed information about a selected reservation
+ * - TimelineFilters: Provides filtering controls for the timeline
+ * - Navigation: Top navigation bar with filter toggle
+ * - PrintReservations: Generates printable version of filtered reservations
+ *
+ * Data Flow:
+ * 1. Fetches reservation data from /api/timeline-data
+ * 2. Groups and sorts reservations by time and priority
+ * 3. Applies user-selected filters
+ * 4. Renders timeline with interactive elements
+ */
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -10,7 +39,7 @@ import {
   FaStar,
   FaRing,
   FaUtensils,
-  FaGift
+  FaGift,
 } from "react-icons/fa";
 import { IconType } from "react-icons";
 import type { ReservationDetail } from "@/types";

@@ -1,3 +1,21 @@
+/**
+ * Volume Utilities
+ *
+ * This module provides utility functions for processing and formatting dining volume data
+ * for visualization in charts and graphs. It handles time-based aggregation of menu items
+ * and categorizes them into appetizers, mains, and desserts.
+ *
+ * Key functions:
+ * - getVolumeData: Processes reservation data into time-based volume counts by meal category
+ * - getDetailedVolumeData: Creates detailed time-series data for each specific menu item
+ *
+ * The module supports:
+ * - Time-slot based aggregation (30-minute intervals from 18:00 to 22:00)
+ * - Special handling for Chef's Tasting Menu orders
+ * - Proportional distribution of orders based on party size
+ * - Color scheme application for consistent visualization
+ */
+
 import { DinersList } from "@/types/api";
 import { menuCategories, colorSchemes } from "@/lib/utils";
 

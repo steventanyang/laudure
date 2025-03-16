@@ -1,3 +1,21 @@
+/**
+ * SkeletonAreaChart Component
+ *
+ * This component provides a loading placeholder for the volume area chart.
+ * It displays a shimmer effect in the shape of an area chart to indicate
+ * that data is being loaded.
+ *
+ * Features:
+ * - Mimics the layout of the actual area chart with grid lines and axes
+ * - Uses Shimmer component for animated loading effect
+ * - Includes static placeholder paths to suggest chart content
+ * - Maintains consistent card structure with the actual chart
+ *
+ * Usage:
+ * - Display while fetching volume data
+ * - Replace with actual AreaChart when data is available
+ */
+
 import { Shimmer } from "@/components/ui/shimmer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 

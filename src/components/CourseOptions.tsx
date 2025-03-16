@@ -1,3 +1,25 @@
+/**
+ * Course Options Component
+ * 
+ * This module provides centralized course options with consistent SVG icons
+ * for use across the application. It defines visual representations for each
+ * course category (appetizers, mains, desserts) with both regular and selected states.
+ * 
+ * Features:
+ * - Consistent geometric shapes for each course category:
+ *   - Appetizers: Triangle
+ *   - Mains: Square
+ *   - Desserts: Pentagon
+ * - Two icon versions for each category:
+ *   - titleIcon: Smaller version for use in headings
+ *   - icon: Larger interactive version with selected/unselected states
+ * 
+ * Usage:
+ * - Import the courseOptions array to ensure consistent course representation
+ * - Use titleIcon for headings and labels
+ * - Use icon function with isSelected parameter for interactive elements
+ */
+
 import { CourseOption } from "@/types";
 
 // Centralized course options with SVG definitions

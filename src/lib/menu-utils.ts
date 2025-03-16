@@ -1,3 +1,22 @@
+/**
+ * Menu Utilities
+ *
+ * This module provides utility functions for processing and analyzing menu data
+ * from the restaurant's dining dataset. It handles loading data from JSON files and
+ * transforming it into formats suitable for menu analytics visualizations.
+ *
+ * Key functions:
+ * - loadDinersData: Loads the augmented dining dataset
+ * - getMenuAnalytics: Processes data to get menu item popularity counts
+ * - addColorsToMenuAnalytics: Enhances analytics with consistent color schemes
+ *
+ * The module supports:
+ * - Counting menu items with consideration for party size
+ * - Special handling for Chef's Tasting Menu orders
+ * - Categorization of items into appetizers, mains, and desserts
+ * - Application of consistent color schemes for visualization
+ */
+
 import { DinersList, MenuAnalytics } from "@/types/api";
 import path from "path";
 import fs from "fs";

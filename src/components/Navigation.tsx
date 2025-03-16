@@ -1,3 +1,24 @@
+/**
+ * Navigation Component
+ *
+ * This component provides the main navigation bar for the application.
+ * It displays tabs for different sections and contextual controls based on the current page.
+ *
+ * Features:
+ * - Responsive navigation with active tab highlighting
+ * - Context-aware controls (filters button on timeline page)
+ * - Fixed positioning with backdrop blur for better readability
+ * - Automatic active tab detection based on current route
+ *
+ * Props:
+ * - toggleFilters: Optional callback function for toggling filter panel
+ * - handlePrint: Optional callback function for print functionality
+ *
+ * Usage:
+ * - Include at the top of page layouts
+ * - Pass appropriate callbacks for page-specific functionality
+ */
+
 "use client";
 
 import { useState, useRef, useEffect } from "react";

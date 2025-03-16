@@ -1,3 +1,25 @@
+/**
+ * ReservationCard Component
+ * 
+ * This component renders an individual reservation card in the timeline view.
+ * Cards are styled based on their status (urgent, attention, normal) and
+ * can display tags as icons.
+ * 
+ * Features:
+ * - Status-based styling (red for urgent, amber for attention, green for normal)
+ * - Displays guest count and guest name
+ * - Shows relevant tags as icons
+ * - Handles selection state with visual feedback
+ * - Positioned on left or right side of timeline based on time
+ * 
+ * @param reservation - The reservation data to display
+ * @param isLeftSide - Whether this card should appear on the left side of the timeline
+ * @param isSelected - Whether this reservation is currently selected
+ * @param isAnimating - Whether animations are currently in progress
+ * @param onClick - Callback function when the card is clicked
+ * @param requestTagIcons - Map of tag names to their icon components
+ */
+
 import { Card } from "@/components/ui/card";
 import { ReservationDetail } from "@/types";
 import { IconType } from "react-icons";
