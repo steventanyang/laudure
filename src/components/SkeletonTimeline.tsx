@@ -23,27 +23,40 @@ export default function SkeletonTimeline() {
 
   return (
     <>
-      {/* Title with shimmer */}
+      {/* Date shimmer */}
       <Shimmer className="w-64 h-8 mb-8 self-center" />
 
       <div className="relative w-full max-w-4xl">
-        {/* Timeline line - shorter to avoid protrusion */}
-        <div className="absolute left-1/2 top-8 bottom-8 w-0.5 bg-gray-700/50 transform -translate-x-1/2"></div>
+        {/* Timeline line */}
+        <div className="absolute left-1/2 top-0 bottom-0 border-dashed border-l border-gray-700/80 transform -translate-x-1/2 h-full"></div>
 
         {/* Timeline content */}
         <div className="relative">
           {times.map((time) => (
             <div key={time} className="mb-10 relative">
-              {/* Time marker - now above circle and centered */}
-              <div className="absolute top-[-25px] left-1/2 transform -translate-x-1/2">
-                <div className="w-16 h-6 bg-gray-700/50 rounded-md"></div>
-              </div>
-
               {/* Timeline dot */}
-              <div className="absolute left-1/2 top-2 w-3 h-3 bg-gray-500 rounded-full transform -translate-x-1/2 z-10"></div>
+              <div className="absolute left-1/2 top-2 w-3 h-3 bg-gray-400 rounded-full transform -translate-x-1/2 z-10"></div>
 
               {/* Request cards */}
-              <div className="py-6">
+              <div className="py-6 relative">
+                {/* Large time display in empty space */}
+                <div
+                  className={`absolute top-1/2 transform -translate-y-1/2 ${
+                    isLeftSide(time) ? "right-8" : "left-8"
+                  } ${
+                    isLeftSide(time) ? "text-right" : "text-left"
+                  } opacity-30 pointer-events-none`}
+                >
+                  <div className="text-7xl font-bold text-gray-700">{time}</div>
+                  <div className="text-xl text-gray-700 mt-2">
+                    <Shimmer
+                      className={`h-6 ${
+                        isLeftSide(time) ? "w-48 ml-auto" : "w-48"
+                      }`}
+                    />
+                  </div>
+                </div>
+
                 {/* Show 1-2 cards based on time */}
                 {Array.from({ length: isLeftSide(time) ? 2 : 1 }).map(
                   (_, i) => (
@@ -56,18 +69,17 @@ export default function SkeletonTimeline() {
                       }`}
                     >
                       <Card className="w-full p-4 backdrop-blur-sm border border-gray-800/60 bg-gray-800/30">
-                        <div className="flex items-center">
-                          {/* Status indicator - more muted */}
-                          <div
-                            className={`w-6 h-6 bg-gray-700/60 rounded-md mr-3`}
-                          ></div>
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center">
+                            {/* People count */}
+                            <div className="h-8 w-8 bg-gray-700/60 rounded-md mr-3"></div>
+                            {/* Name */}
+                            <Shimmer className="h-8 w-32" />
+                          </div>
 
-                          {/* People count - matching the actual page */}
-                          <div className="h-8 w-8 bg-gray-700/60 rounded-md mr-3"></div>
-
-                          <div className="flex space-x-2 ml-auto">
-                            <div className="w-5 h-5 bg-gray-700/50 rounded-full"></div>
-                            <div className="w-5 h-5 bg-gray-700/50 rounded-full"></div>
+                          <div className="flex space-x-2">
+                            <div className="w-6 h-6 bg-gray-700/50 rounded-full"></div>
+                            <div className="w-6 h-6 bg-gray-700/50 rounded-full"></div>
                           </div>
                         </div>
                       </Card>
