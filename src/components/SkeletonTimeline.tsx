@@ -23,9 +23,6 @@ export default function SkeletonTimeline() {
 
   return (
     <>
-      {/* Date shimmer */}
-      <Shimmer className="w-64 h-8 mb-8 self-center" />
-
       <div className="relative w-full max-w-4xl">
         {/* Timeline line */}
         <div className="absolute left-1/2 top-0 bottom-0 border-dashed border-l border-gray-700/80 transform -translate-x-1/2 h-full"></div>

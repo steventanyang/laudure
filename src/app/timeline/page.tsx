@@ -23,6 +23,7 @@ import TimelineFilters, {
   TimelineFiltersState,
 } from "@/components/TimelineFilters";
 import Navigation from "@/components/Navigation";
+import PrintReservations from "@/components/PrintReservations";
 
 // Define tag types and their corresponding icons
 const requestTagIcons: Record<string, { icon: IconType; label: string }> = {
@@ -80,13 +81,12 @@ export default function Special() {
         const elapsedTime = Date.now() - startTime;
         const remainingTime = Math.max(0, 500 - elapsedTime);
 
-        if (remainingTime > 0) {
-          await new Promise((resolve) => setTimeout(resolve, remainingTime));
-        }
+        setTimeout(() => {
+          setLoading(false);
+        }, remainingTime);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
         console.error(err);
-      } finally {
         setLoading(false);
       }
     };
@@ -325,7 +325,15 @@ export default function Special() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <Navigation toggleFilters={toggleFilterPanel} />
+      <Navigation
+        toggleFilters={toggleFilterPanel}
+        handlePrint={() => {}} // We'll handle print differently
+      />
+
+      {/* Add the print button component in the top right - aligned with nav */}
+      <div className="fixed top-[18px] right-8 z-50">
+        <PrintReservations reservations={filteredReservations} date={today} />
+      </div>
 
       <div className="pt-28 pb-8 px-8 relative overflow-hidden scrollbar-hide">
         <TimelineFilters
@@ -704,8 +712,8 @@ export default function Special() {
                   disabled={!getPrevReservation()}
                   className={`flex items-center px-4 py-2 rounded-md transition-colors ${
                     getPrevReservation()
-                      ? "bg-gray-800 hover:bg-gray-700 text-white"
-                      : "bg-gray-800/50 text-gray-500 cursor-not-allowed"
+                      ? "bg-gray-900 hover:bg-gray-800 text-white"
+                      : "bg-gray-900/50 text-gray-500 cursor-not-allowed"
                   }`}
                 >
                   <FaChevronLeft className="mr-2" size={14} />
@@ -716,8 +724,8 @@ export default function Special() {
                   disabled={!getNextReservation()}
                   className={`flex items-center px-4 py-2 rounded-md transition-colors ${
                     getNextReservation()
-                      ? "bg-gray-800 hover:bg-gray-700 text-white"
-                      : "bg-gray-800/50 text-gray-500 cursor-not-allowed"
+                      ? "bg-gray-900 hover:bg-gray-800 text-white"
+                      : "bg-gray-900/50 text-gray-500 cursor-not-allowed"
                   }`}
                 >
                   Next

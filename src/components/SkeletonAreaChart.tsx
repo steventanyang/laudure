@@ -2,15 +2,6 @@ import { Shimmer } from "@/components/ui/shimmer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function SkeletonAreaChart() {
-  // Sample legend items
-  const legendItems = [
-    { color: "#555", name: "Item 1" },
-    { color: "#666", name: "Item 2" },
-    { color: "#777", name: "Item 3" },
-    { color: "#888", name: "Item 4" },
-    { color: "#999", name: "Item 5" },
-  ];
-
   return (
     <Card className="w-full max-w-5xl bg-black border-0">
       <CardHeader className="flex flex-col items-center">
@@ -61,19 +52,6 @@ export default function SkeletonAreaChart() {
           </div>
         </div>
       </CardContent>
-
-      {/* Legend skeleton */}
-      <div className="flex flex-wrap justify-center gap-4 mt-2 mb-6 max-w-4xl px-4">
-        {legendItems.map((item, index) => (
-          <div key={index} className="flex items-center mr-4 mb-2">
-            <div
-              className="w-4 h-4 mr-2"
-              style={{ backgroundColor: item.color }}
-            ></div>
-            <Shimmer className="w-16 h-4" />
-          </div>
-        ))}
-      </div>
     </Card>
   );
 }

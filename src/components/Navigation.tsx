@@ -14,9 +14,12 @@ const navItems: NavItem[] = [
 
 interface NavigationProps {
   toggleFilters?: () => void; // Optional prop for toggling filters
+  handlePrint?: () => void; // Add this prop
 }
 
-export default function Navigation({ toggleFilters }: NavigationProps) {
+export default function Navigation({
+  toggleFilters,
+}: NavigationProps) {
   const pathname = usePathname();
   const [activeTab, setActiveTab] = useState<string>(pathname);
   const [indicatorStyle, setIndicatorStyle] = useState<IndicatorStyle>({
@@ -76,10 +79,10 @@ export default function Navigation({ toggleFilters }: NavigationProps) {
           {isTimelinePage && toggleFilters && (
             <button
               onClick={toggleFilters}
-              className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white px-5 py-3 rounded-md transition-colors duration-200"
+              className="flex items-center px-4 py-2 bg-gray-900 hover:bg-gray-800 text-gray-300 hover:text-white rounded-md transition-colors duration-200"
             >
-              <FaFilter size={16} />
-              <span className="font-medium">Filters</span>
+              <FaFilter className="mr-2" size={14} />
+              Filters
             </button>
           )}
         </div>
@@ -116,8 +119,10 @@ export default function Navigation({ toggleFilters }: NavigationProps) {
           </div>
         </div>
 
-        {/* Empty space on the right to balance the layout */}
-        <div className="w-48"></div>
+        {/* Print button on the right - only show on timeline page */}
+        <div className="w-48 flex justify-end">
+          {/* Print button is now handled separately */}
+        </div>
       </div>
     </nav>
   );

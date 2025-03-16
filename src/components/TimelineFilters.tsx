@@ -209,7 +209,7 @@ export default function TimelineFilters({
                 <div className="text-base font-bold text-gray-300">22</div>
               </div>
 
-              {/* Time slot grid */}
+              {/* Time slot grid - darker shade */}
               <div className="flex bg-gray-800/70 rounded-md h-10 overflow-hidden">
                 {times.map((time, index) => (
                   <button
@@ -218,7 +218,9 @@ export default function TimelineFilters({
                     onMouseEnter={() => handleTimeMouseEnter(time)}
                     onMouseUp={handleTimeMouseUp}
                     className={`flex-1 h-full flex items-center justify-center relative transition-all duration-200 ${
-                      selectedTimes[time] ? "bg-white" : "hover:bg-gray-700/50"
+                      selectedTimes[time]
+                        ? "bg-gray-300/90"
+                        : "hover:bg-gray-700/50"
                     }`}
                   >
                     {index < times.length - 1 && (
@@ -231,7 +233,7 @@ export default function TimelineFilters({
 
             {/* Special Requests Filters */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-300 mb-4">
+              <h3 className="text-lg font-semibold text-gray-200 mb-4">
                 Special Requests
               </h3>
               <div className="grid grid-cols-2 gap-6">
@@ -244,11 +246,11 @@ export default function TimelineFilters({
                     >
                       <TagIcon
                         className={`transition-colors duration-200 ${
-                          selectedTags[tag] ? "text-white" : "text-gray-500"
+                          selectedTags[tag] ? "text-gray-300" : "text-gray-500"
                         }`}
                         size={36}
                       />
-                      <span className="text-sm text-center text-gray-400">
+                      <span className="text-sm text-center text-gray-500">
                         {label}
                       </span>
                     </button>
@@ -263,13 +265,13 @@ export default function TimelineFilters({
                   <div
                     className={`text-3xl font-bold transition-colors duration-200 ${
                       Object.values(selectedTags).every((selected) => selected)
-                        ? "text-white"
-                        : "text-gray-500 hover:text-gray-300"
+                        ? "text-gray-300"
+                        : "text-gray-500 hover:text-gray-400"
                     }`}
                   >
                     All
                   </div>
-                  <span className="text-sm text-center text-gray-400">
+                  <span className="text-sm text-center text-gray-500">
                     Select All
                   </span>
                 </button>
@@ -278,7 +280,7 @@ export default function TimelineFilters({
 
             {/* Status Filters */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-300 mb-4">
+              <h3 className="text-lg font-semibold text-gray-200 mb-4">
                 Status
               </h3>
               <div className="grid grid-cols-3 gap-6">
@@ -330,17 +332,17 @@ export default function TimelineFilters({
               </div>
             </div>
 
-            {/* Save button */}
+            {/* Apply button - brightest element */}
             <div className="flex flex-col items-center pt-6">
               <button
                 onClick={handleSaveFilters}
-                className="w-full py-3 bg-white hover:bg-gray-100 text-black font-medium rounded-md shadow-md transition-colors duration-200"
+                className="w-full py-3 bg-gray-200 hover:bg-gray-100 text-black font-bold rounded-md shadow-md transition-colors duration-200"
               >
                 Apply
               </button>
               <button
                 onClick={resetFilters}
-                className="text-sm font-medium text-gray-400 hover:text-gray-200 mt-5 transition-colors"
+                className="text-sm font-bold text-gray-500 hover:text-gray-300 mt-5 transition-colors"
               >
                 Reset Filters
               </button>
