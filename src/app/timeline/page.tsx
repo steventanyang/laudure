@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import SkeletonTimeline from "@/components/SkeletonTimeline";
 // Import icons from a common icon library
@@ -50,6 +50,8 @@ export default function Special() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const [isFiltering, setIsFiltering] = useState(false);
+  const [activeTime, setActiveTime] = useState<string | null>(null);
+  const timeSectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // At the top of the component, simplify the date format
   const today = new Date().toLocaleDateString("en-US", {
@@ -101,6 +103,7 @@ export default function Special() {
       setIsPanelVisible(false);
       setIsOverlayVisible(false);
       setSelectedReservation(null);
+      setActiveTime(null); // Reset active time
     }
 
     setTimeout(() => {
@@ -129,37 +132,55 @@ export default function Special() {
     }, 800);
   };
 
-  // Get the previous reservation
+  // Add this function to get ordered reservations for navigation
+  const getOrderedReservations = () => {
+    // Create the same order as displayed on screen
+    const ordered: ReservationDetail[] = [];
+
+    // Get all time slots in display order
+    const times = Object.keys(sortedTimeGroups).sort((a, b) => {
+      // Sort by time (e.g., "18:00", "18:30", etc.)
+      return a.localeCompare(b);
+    });
+
+    // For each time slot, add reservations in order of priority
+    times.forEach((time) => {
+      ordered.push(...sortedTimeGroups[time]);
+    });
+
+    return ordered;
+  };
+
+  // Update the navigation functions
   const getPrevReservation = () => {
     if (!selectedReservation) return null;
 
-    // Get all reservations in a flat array
-    const allReservations = filteredReservations;
+    // Get all reservations in display order
+    const orderedReservations = getOrderedReservations();
 
     // Find current index
-    const currentIndex = allReservations.findIndex(
+    const currentIndex = orderedReservations.findIndex(
       (r) => r.id === selectedReservation.id
     );
 
     // Return previous reservation or null if at the start
-    return currentIndex > 0 ? allReservations[currentIndex - 1] : null;
+    return currentIndex > 0 ? orderedReservations[currentIndex - 1] : null;
   };
 
-  // Get the next reservation
   const getNextReservation = () => {
     if (!selectedReservation) return null;
 
-    // Get all reservations in a flat array
-    const allReservations = filteredReservations;
+    // Get all reservations in display order
+    const orderedReservations = getOrderedReservations();
 
     // Find current index
-    const currentIndex = allReservations.findIndex(
+    const currentIndex = orderedReservations.findIndex(
       (r) => r.id === selectedReservation.id
     );
 
     // Return next reservation or null if at the end
-    return currentIndex < allReservations.length - 1
-      ? allReservations[currentIndex + 1]
+    return currentIndex < orderedReservations.length - 1
+      ? orderedReservations[currentIndex + 1]
       : null;
   };
 
@@ -170,6 +191,25 @@ export default function Special() {
 
     if (targetReservation) {
       setSelectedReservation(targetReservation);
+
+      // Set the active time
+      const newActiveTime = targetReservation.time;
+
+      // Only scroll if the time is changing
+      if (activeTime !== newActiveTime) {
+        setActiveTime(newActiveTime);
+
+        // Scroll to the time section with a small delay to ensure UI has updated
+        setTimeout(() => {
+          const timeSection = timeSectionRefs.current[newActiveTime];
+          if (timeSection) {
+            timeSection.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+            });
+          }
+        }, 100);
+      }
     }
   };
 
@@ -229,39 +269,58 @@ export default function Special() {
 
   // Handle reservation click
   const handleReservationClick = (reservation: ReservationDetail) => {
-    // Prevent interaction during animation
     if (isAnimating) return;
-
     setIsAnimating(true);
     setSelectedReservation(reservation);
-    // Start animations
+    setActiveTime(reservation.time);
     setIsOverlayVisible(true);
     setTimeout(() => {
       setIsPanelVisible(true);
-      // Animation is complete, allow interactions again
       setTimeout(() => setIsAnimating(false), 300);
     }, 50);
   };
 
   // Close side panel
   const closeSidePanel = () => {
-    // Prevent interaction during animation
     if (isAnimating) return;
-
     setIsAnimating(true);
-    // Reverse animation order
     setIsPanelVisible(false);
+
     setTimeout(() => {
       setIsOverlayVisible(false);
+      setActiveTime(null); // Reset active time when closing panel
+
       setTimeout(() => {
         setSelectedReservation(null);
-        setIsAnimating(false); // Animation is complete, allow interactions again
+        setIsAnimating(false);
       }, 300);
     }, 100);
   };
 
   const toggleFilterPanel = () => {
-    setIsFilterPanelOpen(!isFilterPanelOpen);
+    if (!isFilterPanelOpen && reservations.length > 0) {
+      // When opening, ensure the times are properly loaded
+      // This is a backup in case the useEffect in TimelineFilters doesn't catch it
+      // const allTimesSelected = Object.keys(
+      //   reservations.reduce(
+      //     (times, res) => ({ ...times, [res.time]: true }),
+      //     {}
+      //   )
+      // );
+
+      // Then toggle the panel
+      setIsFilterPanelOpen(true);
+    } else {
+      setIsFilterPanelOpen(false);
+    }
+  };
+
+  // Create a combined highlight state to show both activeTime and the section containing the selected reservation
+  const isHighlightedSection = (time: string) => {
+    return (
+      activeTime === time ||
+      (selectedReservation && selectedReservation.time === time)
+    );
   };
 
   return (
@@ -301,18 +360,35 @@ export default function Special() {
 
                     {/* Request cards */}
                     <div className="py-6 relative">
-                      {/* Large time display in empty space - now brighter */}
+                      {/* Large time display in empty space - now with active state highlighting */}
                       <div
                         className={`absolute top-1/2 transform -translate-y-1/2 ${
                           isLeftSide(time) ? "right-8" : "left-8"
                         } ${
                           isLeftSide(time) ? "text-right" : "text-left"
-                        } opacity-30 pointer-events-none`}
+                        } pointer-events-none transition-all duration-500 ${
+                          isHighlightedSection(time) ? "z-50" : ""
+                        }`}
+                        ref={(el) => {
+                          timeSectionRefs.current[time] = el;
+                        }}
                       >
-                        <div className="text-7xl font-bold text-gray-300">
+                        <div
+                          className={`text-7xl font-bold transition-all duration-300 ${
+                            isHighlightedSection(time)
+                              ? "text-white drop-shadow-glow"
+                              : "text-gray-300 opacity-60"
+                          }`}
+                        >
                           {time}
                         </div>
-                        <div className="text-xl text-gray-400 mt-2">
+                        <div
+                          className={`text-xl mt-2 transition-all duration-300 ${
+                            isHighlightedSection(time)
+                              ? "text-white opacity-90 drop-shadow-glow"
+                              : "text-gray-400 opacity-70"
+                          }`}
+                        >
                           <span>
                             {sortedTimeGroups[time].reduce(
                               (total, req) => total + req.people,
@@ -339,7 +415,11 @@ export default function Special() {
                                 : request.status === "attention"
                                 ? "bg-amber-950/30 border-amber-700/40 hover:border-amber-600/60"
                                 : "bg-green-950/30 border-green-700/40 hover:border-green-600/60"
-                            } ${isAnimating ? "pointer-events-none" : ""}`}
+                            } ${isAnimating ? "pointer-events-none" : ""} ${
+                              selectedReservation?.id === request.id
+                                ? "scale-105 shadow-xl z-50 border-2 bg-opacity-95 brightness-110"
+                                : ""
+                            }`}
                             onClick={() => handleReservationClick(request)}
                           >
                             <div className="flex justify-between items-center">
@@ -652,10 +732,10 @@ export default function Special() {
         </div>
       )}
 
-      {/* Overlay with fade effect */}
+      {/* Overlay with hole for selected card */}
       <div
         className={`fixed inset-0 bg-black transition-opacity duration-300 ease-in-out z-40 ${
-          isOverlayVisible ? "opacity-50" : "opacity-0 pointer-events-none"
+          isOverlayVisible ? "opacity-70" : "opacity-0 pointer-events-none"
         }`}
         onClick={closeSidePanel}
       ></div>

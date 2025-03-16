@@ -33,6 +33,16 @@ export default function TimelineFilters({
     times.reduce((acc, time) => ({ ...acc, [time]: true }), {})
   );
 
+  // Add this useEffect to update the selected times when the times prop changes
+  useEffect(() => {
+    // Only update if times array has items and the selectedTimes is empty
+    if (times.length > 0 && Object.keys(selectedTimes).length === 0) {
+      setSelectedTimes(
+        times.reduce((acc, time) => ({ ...acc, [time]: true }), {})
+      );
+    }
+  }, [times, selectedTimes]);
+
   // Drag selection state
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartTime, setDragStartTime] = useState<string | null>(null);
