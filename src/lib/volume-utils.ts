@@ -168,4 +168,4 @@ export function getDetailedVolumeData(data: DinersList) {
     dessertsData: formatChartData("desserts"),
     colors: colorSchemes,
   };
-} 
+}

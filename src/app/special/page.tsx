@@ -38,6 +38,7 @@ export default function Special() {
     useState<ReservationDetail | null>(null);
   const [isPanelVisible, setIsPanelVisible] = useState(false);
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   // Fetch kitchen notes data
   useEffect(() => {
@@ -119,19 +120,34 @@ export default function Special() {
 
   // Handle reservation click
   const handleReservationClick = (reservation: ReservationDetail) => {
+    // Prevent interaction during animation
+    if (isAnimating) return;
+
+    setIsAnimating(true);
     setSelectedReservation(reservation);
     // Start animations
     setIsOverlayVisible(true);
-    setTimeout(() => setIsPanelVisible(true), 50); // Slight delay for overlay to start first
+    setTimeout(() => {
+      setIsPanelVisible(true);
+      // Animation is complete, allow interactions again
+      setTimeout(() => setIsAnimating(false), 300);
+    }, 50);
   };
 
   // Close side panel
   const closeSidePanel = () => {
+    // Prevent interaction during animation
+    if (isAnimating) return;
+
+    setIsAnimating(true);
     // Reverse animation order
     setIsPanelVisible(false);
     setTimeout(() => {
       setIsOverlayVisible(false);
-      setTimeout(() => setSelectedReservation(null), 300); // Wait for animations to complete
+      setTimeout(() => {
+        setSelectedReservation(null);
+        setIsAnimating(false); // Animation is complete, allow interactions again
+      }, 300);
     }, 100);
   };
 
@@ -177,7 +193,7 @@ export default function Special() {
                               : request.status === "attention"
                               ? "bg-amber-950/30 border-amber-700/40"
                               : "bg-green-950/30 border-green-700/40"
-                          }`}
+                          } ${isAnimating ? "pointer-events-none" : ""}`}
                           onClick={() => handleReservationClick(request)}
                         >
                           <div className="flex justify-between items-center">
@@ -246,70 +262,162 @@ export default function Special() {
           }`}
         >
           <div className="p-8">
-            {/* Close button */}
+            {/* More subtle close button - now darker */}
             <button
               onClick={closeSidePanel}
-              className="absolute top-6 right-6 text-gray-400 hover:text-white transition-colors duration-200"
+              className="absolute top-6 right-6 text-gray-800 hover:text-gray-600 transition-colors duration-200"
             >
-              <FaTimes size={20} />
+              <FaTimes size={18} />
             </button>
 
-            {/* Header */}
-            <div className="mb-10">
+            {/* Condensed Header */}
+            <div className="mb-10 flex items-center">
+              {/* Large party size number - fixed green for normal status */}
               <div
-                className={`inline-block px-3 py-1 rounded-md text-sm font-medium mb-3 ${
+                className={`text-5xl font-bold mr-6 ${
                   selectedReservation.status === "urgent"
-                    ? "bg-red-950 text-red-300"
+                    ? "text-red-300"
                     : selectedReservation.status === "attention"
-                    ? "bg-amber-950 text-amber-300"
-                    : "bg-green-950 text-green-300"
+                    ? "text-amber-300"
+                    : "text-green-300"
                 }`}
               >
-                {selectedReservation.status === "urgent"
-                  ? "IMMEDIATE ACTION"
-                  : selectedReservation.status === "attention"
-                  ? "SPECIAL CARE"
-                  : "STANDARD PREP"}
+                {selectedReservation.people}
               </div>
-              <h2 className="text-3xl font-bold text-white mb-2">
-                {selectedReservation.name}
-              </h2>
-              <div className="flex items-center text-gray-400">
-                <span className="mr-4">
-                  Party of {selectedReservation.people}
-                </span>
-                <span>{selectedReservation.time}</span>
-                <span className="mx-2">•</span>
-                <span>{selectedReservation.date}</span>
+
+              <div>
+                {/* Name with status color - fixed green for normal status */}
+                <h2
+                  className={`text-3xl font-bold mb-2 ${
+                    selectedReservation.status === "urgent"
+                      ? "text-red-300"
+                      : selectedReservation.status === "attention"
+                      ? "text-amber-300"
+                      : "text-green-300"
+                  }`}
+                >
+                  {selectedReservation.name}
+                </h2>
+
+                {/* Time and date - now bolder */}
+                <div className="flex items-center text-gray-400 font-semibold text-base">
+                  <span>{selectedReservation.time}</span>
+                  <span className="mx-2">•</span>
+                  <span>{new Date().toISOString().split("T")[0]}</span>
+                </div>
               </div>
             </div>
 
-            {/* Menu Items */}
+            {/* Menu Items with special styling for Chef's Tasting Menu */}
             <div className="mb-8">
-              <h3 className="text-lg font-semibold text-white mb-4">
+              <h3 className="text-lg font-semibold text-gray-400 mb-4">
                 Menu Items
               </h3>
               <div className="space-y-3">
                 {selectedReservation.dishes.map((dish, index) => {
-                  const { color } = getDishCategoryAndColor(dish);
+                  // Special styling for Chef's Tasting Menu
+                  if (dish === "Chef's Tasting Menu") {
+                    return (
+                      <div
+                        key={index}
+                        className="rounded-md p-4 font-bold flex justify-between items-center"
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #8bc34a40, #e0b0b040, #ffca2840, #ce92ce40, #85b1bd40)",
+                          color: "#ffffff",
+                          textShadow: "0 1px 2px rgba(0,0,0,0.5)",
+                          border: "1px solid rgba(255,255,255,0.1)",
+                        }}
+                      >
+                        <span>{dish}</span>
+
+                        {/* Special icon for Chef's Tasting Menu */}
+                        <div className="ml-3 flex-shrink-0">
+                          <svg width="24" height="24" viewBox="0 0 24 24">
+                            <path
+                              d="M12 2L14.5 9H22L16 13.5L18 21L12 17L6 21L8 13.5L2 9H9.5L12 2Z"
+                              fill="#ffffff"
+                              stroke="#ffffff"
+                              strokeWidth="1"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  // Regular styling for other dishes
+                  const { category, color } = getDishCategoryAndColor(dish);
                   return (
                     <div
                       key={index}
-                      className="rounded-md p-4 text-white"
+                      className="rounded-md p-4 font-bold flex justify-between items-center"
                       style={{
-                        backgroundColor: `${color}40` /* 25% opacity */,
+                        backgroundColor: `${color}`,
+                        opacity: 0.85,
+                        color: "#1a1a1a",
+                        textShadow: "0 1px 1px rgba(255,255,255,0.1)",
                       }}
                     >
-                      {dish}
+                      <span>{dish}</span>
+
+                      {/* Category shape */}
+                      <div className="ml-3 flex-shrink-0">
+                        {(category as string) === "appetizers" && (
+                          <svg width="24" height="24" viewBox="0 0 40 40">
+                            <polygon
+                              points="20,5 38,35 2,35"
+                              fill="#1a1a1a"
+                              stroke="#1a1a1a"
+                              strokeWidth="2"
+                            />
+                          </svg>
+                        )}
+                        {(category as string) === "mains" && (
+                          <svg width="24" height="24" viewBox="0 0 30 30">
+                            <rect
+                              x="3"
+                              y="3"
+                              width="24"
+                              height="24"
+                              fill="#1a1a1a"
+                              stroke="#1a1a1a"
+                              strokeWidth="2"
+                            />
+                          </svg>
+                        )}
+                        {(category as string) === "desserts" && (
+                          <svg width="24" height="24" viewBox="0 0 30 30">
+                            <polygon
+                              points="15,2 28,11 23,28 7,28 2,11"
+                              fill="#1a1a1a"
+                              stroke="#1a1a1a"
+                              strokeWidth="2"
+                            />
+                          </svg>
+                        )}
+                        {(category as string) === "other" && (
+                          <svg width="24" height="24" viewBox="0 0 30 30">
+                            <circle
+                              cx="15"
+                              cy="15"
+                              r="12"
+                              fill="#1a1a1a"
+                              stroke="#1a1a1a"
+                              strokeWidth="2"
+                            />
+                          </svg>
+                        )}
+                      </div>
                     </div>
                   );
                 })}
               </div>
             </div>
 
-            {/* Special Requests */}
+            {/* Special Requests with icon-only tags */}
             <div className="mb-8">
-              <h3 className="text-lg font-semibold text-white mb-4">
+              <h3 className="text-lg font-semibold text-gray-400 mb-4">
                 Special Requests
               </h3>
               <div className="space-y-4">
@@ -324,22 +432,38 @@ export default function Special() {
                         : "border-green-500"
                     }`}
                   >
-                    <div className="text-sm text-gray-400 mb-2">
-                      {note.dish}
-                    </div>
-                    <div className="text-white">{note.note}</div>
-                    {note.tags && note.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-3">
-                        {note.tags.map((tag, tagIndex) => (
-                          <span
-                            key={tagIndex}
-                            className="inline-block px-2 py-1 bg-gray-700/70 rounded-md text-xs text-gray-300"
-                          >
-                            {tag}
-                          </span>
-                        ))}
+                    {/* Dish name with icons */}
+                    <div className="flex items-center mb-2">
+                      <div className="text-sm text-gray-400 mr-2">
+                        {note.dish}
                       </div>
-                    )}
+
+                      {/* Tag icons beside dish name */}
+                      {note.tags && note.tags.length > 0 && (
+                        <div className="flex gap-1">
+                          {note.tags.map((tag, tagIndex) => {
+                            const TagIcon = requestTagIcons[tag]?.icon;
+                            return TagIcon ? (
+                              <div
+                                key={tagIndex}
+                                className={`rounded-full p-1 ${
+                                  note.urgency === "red"
+                                    ? "text-red-300"
+                                    : note.urgency === "orange"
+                                    ? "text-amber-300"
+                                    : "text-green-300"
+                                }`}
+                                title={requestTagIcons[tag]?.label}
+                              >
+                                <TagIcon size={16} />
+                              </div>
+                            ) : null;
+                          })}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="text-white">{note.note}</div>
                   </div>
                 ))}
               </div>
