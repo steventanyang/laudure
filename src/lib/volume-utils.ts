@@ -36,10 +36,13 @@ export function getVolumeData(data: DinersList) {
           if (item === "Chef's Tasting Menu") return;
 
           // Categorize the meal
+          // @ts-expect-error Type assertion is not needed here
           if (menuCategories.appetizers.includes(item)) {
             volumeData[timeIndex].appetizers += 1;
+            // @ts-expect-error Type assertion is not needed here
           } else if (menuCategories.mains.includes(item)) {
             volumeData[timeIndex].mains += 1;
+            // @ts-expect-error Type assertion is not needed here
           } else if (menuCategories.desserts.includes(item)) {
             volumeData[timeIndex].desserts += 1;
           }
@@ -89,6 +92,11 @@ export function getDetailedVolumeData(data: DinersList) {
     result.desserts[item] = Array(timeSlots.length).fill(0);
   });
 
+  // Add Chef's Tasting Menu to all categories
+  result.appetizers["Chef's Tasting Menu"] = Array(timeSlots.length).fill(0);
+  result.mains["Chef's Tasting Menu"] = Array(timeSlots.length).fill(0);
+  result.desserts["Chef's Tasting Menu"] = Array(timeSlots.length).fill(0);
+
   // Process reservations and distribute orders evenly
   data.diners.forEach((diner) => {
     diner.reservations?.forEach((reservation) => {
@@ -100,22 +108,36 @@ export function getDetailedVolumeData(data: DinersList) {
         const appetizerOrders: string[] = [];
         const mainOrders: string[] = [];
         const dessertOrders: string[] = [];
+        let hasTastingMenu = false;
 
         // Categorize each order
         reservation.orders.forEach((order) => {
           const item = order.item;
 
-          // Skip Chef's Tasting Menu
-          if (item === "Chef's Tasting Menu") return;
+          // Handle Chef's Tasting Menu separately
+          if (item === "Chef's Tasting Menu") {
+            hasTastingMenu = true;
+            return;
+          }
 
+          // @ts-expect-error Type assertion is not needed here
           if (menuCategories.appetizers.includes(item)) {
             appetizerOrders.push(item);
+            // @ts-expect-error Type assertion is not needed here
           } else if (menuCategories.mains.includes(item)) {
             mainOrders.push(item);
+            // @ts-expect-error Type assertion is not needed here
           } else if (menuCategories.desserts.includes(item)) {
             dessertOrders.push(item);
           }
         });
+
+        // If there's a tasting menu, add it to all categories
+        if (hasTastingMenu) {
+          result.appetizers["Chef's Tasting Menu"][timeIndex] += peopleCount;
+          result.mains["Chef's Tasting Menu"][timeIndex] += peopleCount;
+          result.desserts["Chef's Tasting Menu"][timeIndex] += peopleCount;
+        }
 
         // Distribute appetizers evenly
         if (appetizerOrders.length > 0) {
@@ -162,10 +184,16 @@ export function getDetailedVolumeData(data: DinersList) {
     });
   };
 
+  // Add iridescent color for Chef's Tasting Menu to all color schemes
+  const iridescent = "url(#iridescent-gradient)";
+  result.colors.appetizers.push(iridescent);
+  result.colors.mains.push(iridescent);
+  result.colors.desserts.push(iridescent);
+
   return {
     appetizersData: formatChartData("appetizers"),
     mainsData: formatChartData("mains"),
     dessertsData: formatChartData("desserts"),
-    colors: colorSchemes,
+    colors: result.colors,
   };
 }

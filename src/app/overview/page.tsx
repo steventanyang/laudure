@@ -48,7 +48,7 @@ export default function Overview() {
     },
     {
       id: "mains",
-      name: "Main Courses",
+      name: "Mains",
       titleIcon: (
         <svg
           width="24"

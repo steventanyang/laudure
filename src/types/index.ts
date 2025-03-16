@@ -82,16 +82,19 @@ export interface SpecialRequest {
 export interface KitchenNote {
   note: string;
   dish: string;
-  tags: string[];
   urgency: UrgencyColor;
+  tags?: string[];
 }
 
 export interface ProcessedKitchenNote {
   id: number;
-  time: string;
-  people: number;
-  status: RequestStatus;
   name: string;
+  people: number;
+  time: string;
+  date: string;
+  note: string;
+  dish: string;
+  urgency: UrgencyColor;
   tags: string[];
 }
 
@@ -107,25 +110,14 @@ export interface StatusColors {
 
 export interface ReservationDetail {
   id: number;
+  name: string;
+  people: number;
   time: string;
   date: string;
-  people: number;
-  status: RequestStatus;
-  name: string;
+  status: "urgent" | "attention" | "normal";
   tags: string[];
-  // Additional details for expanded view
   dishes: string[];
-  notes: KitchenNoteDetail[];
-  priorityAlerts?: PriorityAlert[];
-  guestProfile?: GuestProfile;
-  serviceRecommendations?: ServiceRecommendation[];
-}
-
-export interface KitchenNoteDetail {
-  note: string;
-  dish: string;
-  tags: string[];
-  urgency: UrgencyColor;
+  notes: KitchenNote[];
 }
 
 export interface PriorityAlert {
@@ -144,4 +136,34 @@ export interface ServiceRecommendation {
   recommendation: string;
   timing: string;
   owner: string;
+}
+
+// Data structure types matching the JSON file
+export interface Order {
+  item: string;
+  notes?: string;
+}
+
+export interface AgentAnalysis {
+  coordinator_summary?: {
+    kitchen_notes?: KitchenNote[];
+  };
+  chef_notes?: KitchenNote[];
+}
+
+export interface Reservation {
+  time: string;
+  date: string;
+  number_of_people: number;
+  orders: Order[];
+  agent_analysis?: AgentAnalysis;
+}
+
+export interface Diner {
+  name: string;
+  reservations?: Reservation[];
+}
+
+export interface DinerData {
+  diners: Diner[];
 }

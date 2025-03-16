@@ -1,0 +1,154 @@
+{
+  "guests": [
+    {
+      "name": "String - Guest's full name",
+      "reviews": [
+        {
+          "restaurant_name": "String - Name of the restaurant reviewed",
+          "date": "String - Date of the review in YYYY-MM-DD format",
+          "rating": "Number - Rating given (typically 1-5)",
+          "content": "String - The actual review text"
+        }
+      ],
+      "reservations": [
+        {
+          "date": "String - Date of reservation in YYYY-MM-DD format",
+          "number_of_people": "Number - Party size",
+          "orders": [
+            {
+              "item": "String - Name of the menu item ordered",
+              "dietary_tags": ["String - Array of dietary restrictions/tags"],
+              "price": "Number - Price of the item"
+            }
+          ],
+          "time": "String - Time of reservation in 24-hour format (HH:MM)",
+          "agent_analysis": {
+            "agent_analysis": {
+              "dietary_analysis": {
+                "allergies": [
+                  {
+                    "item": "String - Allergen name",
+                    "severity": "String - Severity level (e.g., mild, critical)",
+                    "source": "String - Where this information was obtained"
+                  }
+                ],
+                "dietary_restrictions": [
+                  "String - Array of dietary restrictions"
+                ],
+                "preparation_instructions": [
+                  {
+                    "dish": "String - Name of the dish",
+                    "instruction": "String - Special preparation instructions"
+                  }
+                ]
+              },
+              "guest_experience": {
+                "past_impressions": [
+                  {
+                    "type": "String - Positive or negative",
+                    "aspect": "String - What aspect of dining was mentioned",
+                    "source": "String - Source of this impression"
+                  }
+                ],
+                "service_preferences": {
+                  "style": "String - Preferred service style (e.g., attentive, hands-off)",
+                  "evidence": "String - Evidence for this preference"
+                },
+                "conversation_topics": [
+                  {
+                    "topic": "String - Topic of interest",
+                    "context": "String - Context for this topic"
+                  }
+                ]
+              },
+              "special_requests": {
+                "explicit_requests": [
+                  {
+                    "request": "String - Specific request made by guest",
+                    "priority": "String - Priority level (high, medium, low)",
+                    "source": "String - Source of this request"
+                  }
+                ],
+                "service_modifications": [
+                  {
+                    "modification": "String - Service modification needed",
+                    "notes": "String - Additional notes about the modification"
+                  }
+                ],
+                "time_sensitive": [
+                  {
+                    "need": "String - Time-sensitive need",
+                    "timing": "String - When this need should be addressed"
+                  }
+                ],
+                "special_occasions": [
+                  {
+                    "occasion": "String - Special occasion being celebrated",
+                    "details": "String - Details about the occasion"
+                  }
+                ]
+              },
+              "personalization": {
+                "personalization_opportunities": [
+                  {
+                    "opportunity": "String - Opportunity to personalize experience",
+                    "implementation": "String - How to implement this opportunity",
+                    "impact": "String - Expected impact level"
+                  }
+                ],
+                "upsell_opportunities": [
+                  {
+                    "item": "String - Item that could be upsold",
+                    "rationale": "String - Rationale for this upsell opportunity"
+                  }
+                ],
+                "recognition_moments": [
+                  {
+                    "moment": "String - Moment for recognition",
+                    "approach": "String - Approach for this recognition"
+                  }
+                ]
+              }
+            },
+            "coordinator_summary": {
+              "priority_alerts": [
+                {
+                  "alert": "String - Alert message",
+                  "category": "String - Category of alert",
+                  "for": "String - Department responsible"
+                }
+              ],
+              "guest_profile": {
+                "dining_style": "String - Guest's dining style",
+                "preferences": ["String - Array of preferences"],
+                "avoid": ["String - Array of things to avoid"]
+              },
+              "service_recommendations": [
+                {
+                  "recommendation": "String - Service recommendation",
+                  "timing": "String - When to implement",
+                  "owner": "String - Who is responsible"
+                }
+              ],
+              "kitchen_notes": [
+                {
+                  "note": "String - Note for the kitchen",
+                  "dish": "String - Dish this note applies to",
+                  "tags": ["String - Array of relevant tags"],
+                  "urgency": "String - Urgency level (e.g., red, orange, green)"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "emails": [
+        {
+          "date": "String - Date of email in YYYY-MM-DD format",
+          "subject": "String - Email subject line",
+          "combined_thread": "String - Full email thread content"
+        }
+      ]
+    }
+  ]
+}

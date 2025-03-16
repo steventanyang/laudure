@@ -22,6 +22,7 @@ export default function Volume() {
   const [error, setError] = useState<string | null>(null);
   const [selectedCourse, setSelectedCourse] =
     useState<CourseOption["id"]>("mains");
+  const [highlightedItem, setHighlightedItem] = useState<string | null>(null);
 
   // Updated course options with larger SVGs
   const courseOptions: CourseOption[] = [
@@ -57,7 +58,7 @@ export default function Volume() {
     },
     {
       id: "mains",
-      name: "Main Courses",
+      name: "Mains",
       titleIcon: (
         <svg
           width="24"
@@ -183,8 +184,27 @@ export default function Volume() {
   // Get current color scheme
   const currentColors = detailedData!.colors[selectedCourse];
 
-  // Get item names for the selected course
-  const itemNames = Object.keys(currentData[0]).filter((key) => key !== "time");
+  // Get item names for the selected course - fix type error by filtering out non-string keys
+  const itemNames = Object.keys(currentData[0]).filter(
+    (key) => key !== "time" && typeof currentData[0][key] === "number"
+  );
+
+  // Get the current title text based on highlighted item or selected course
+  const getTitleText = () => {
+    if (highlightedItem) {
+      return highlightedItem;
+    }
+    return courseOptions.find((o) => o.id === selectedCourse)?.name;
+  };
+
+  // Handle smooth transitions for highlighting
+  const handleMouseEnter = (item: string) => {
+    setHighlightedItem(item);
+  };
+
+  const handleMouseLeave = () => {
+    setHighlightedItem(null);
+  };
 
   return (
     <div className="pt-24 pb-8 px-8">
@@ -192,9 +212,9 @@ export default function Volume() {
         {/* Main Chart Card */}
         <Card className="w-full max-w-5xl bg-black border-0">
           <CardHeader className="flex flex-col items-center">
-            <CardTitle className="text-2xl font-bold text-white">
+            <CardTitle className="text-2xl font-bold text-white transition-all duration-500">
               {courseOptions.find((o) => o.id === selectedCourse)?.titleIcon}
-              {courseOptions.find((o) => o.id === selectedCourse)?.name}
+              {getTitleText()}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -207,6 +227,73 @@ export default function Volume() {
                     data={currentData}
                     margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
                   >
+                    <defs>
+                      {/* Iridescent gradient for Chef's Tasting Menu */}
+                      <linearGradient
+                        id="iridescent-gradient"
+                        x1="0"
+                        y1="0"
+                        x2="1"
+                        y2="1"
+                      >
+                        <stop offset="0%" stopColor="#8a9ec7" />
+                        <stop offset="20%" stopColor="#c79ec0" />
+                        <stop offset="40%" stopColor="#9ec7a8" />
+                        <stop offset="60%" stopColor="#c7b89e" />
+                        <stop offset="80%" stopColor="#9eaec7" />
+                        <stop offset="100%" stopColor="#c79e9e" />
+                      </linearGradient>
+
+                      {/* Create gradient definitions for each color with brighter edges */}
+                      {itemNames.map((item, index) => {
+                        if (item === "Chef's Tasting Menu") return null;
+
+                        const baseColor =
+                          currentColors[index % currentColors.length];
+                        // Create a slightly brighter version for the edges
+                        const brighterColor = baseColor.replace(
+                          /rgba?\((\d+), (\d+), (\d+)(?:, [\d.]+)?\)/,
+                          (match, r, g, b) => {
+                            const brighterR = Math.min(255, parseInt(r) + 40);
+                            const brighterG = Math.min(255, parseInt(g) + 40);
+                            const brighterB = Math.min(255, parseInt(b) + 40);
+                            return `rgb(${brighterR}, ${brighterG}, ${brighterB})`;
+                          }
+                        );
+
+                        return (
+                          <linearGradient
+                            key={`gradient-${item}`}
+                            id={`gradient-${index}`}
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="0%"
+                              stopColor={brighterColor}
+                              stopOpacity={0.8}
+                            />
+                            <stop
+                              offset="5%"
+                              stopColor={baseColor}
+                              stopOpacity={0.6}
+                            />
+                            <stop
+                              offset="95%"
+                              stopColor={baseColor}
+                              stopOpacity={0.6}
+                            />
+                            <stop
+                              offset="100%"
+                              stopColor={brighterColor}
+                              stopOpacity={0.8}
+                            />
+                          </linearGradient>
+                        );
+                      })}
+                    </defs>
                     <CartesianGrid
                       strokeDasharray="3 6"
                       stroke="#222222"
@@ -238,17 +325,39 @@ export default function Volume() {
                       itemStyle={{ color: "#fff" }}
                       labelStyle={{ color: "#fff" }}
                     />
-                    {itemNames.map((item, index) => (
-                      <Area
-                        key={item}
-                        type="monotone"
-                        dataKey={item}
-                        stackId="1"
-                        stroke={currentColors[index % currentColors.length]}
-                        fill={currentColors[index % currentColors.length]}
-                        name={item}
-                      />
-                    ))}
+                    {itemNames.map((item, index) => {
+                      const isHighlighted = highlightedItem === item;
+                      const isDimmed =
+                        highlightedItem !== null && !isHighlighted;
+
+                      // Use the gradient for regular items, iridescent for Chef's Tasting Menu
+                      const fillColor =
+                        item === "Chef's Tasting Menu"
+                          ? "url(#iridescent-gradient)"
+                          : `url(#gradient-${index})`;
+
+                      // Use solid colors for strokes
+                      const strokeColor =
+                        item === "Chef's Tasting Menu"
+                          ? "#fff"
+                          : currentColors[index % currentColors.length];
+
+                      return (
+                        <Area
+                          key={item}
+                          type="monotone"
+                          dataKey={item as string}
+                          stackId="1"
+                          stroke={strokeColor}
+                          fill={fillColor}
+                          name={item}
+                          fillOpacity={isDimmed ? 0.1 : 0.8}
+                          strokeOpacity={isDimmed ? 0.2 : 1}
+                          strokeWidth={isHighlighted ? 2 : 1}
+                          className="transition-all duration-500"
+                        />
+                      );
+                    })}
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
@@ -256,27 +365,49 @@ export default function Volume() {
           </CardContent>
         </Card>
 
-        {/* Custom Legend - only shown when not loading */}
+        {/* Hover-based Legend - only shown when not loading */}
         {!loading && (
-          <div className="flex flex-wrap justify-center gap-4 mt-2 mb-6 max-w-4xl">
-            {itemNames.map((item, index) => (
-              <div key={item} className="flex items-center mr-4 mb-2">
-                <div
-                  className="w-5 h-5 mr-2"
-                  style={{
-                    backgroundColor:
-                      currentColors[index % currentColors.length],
-                  }}
-                ></div>
-                <span className="text-sm text-gray-400">{item}</span>
-              </div>
-            ))}
+          <div className="mt-6 mb-2 relative">
+            {/* Color squares row */}
+            <div
+              className="flex justify-center gap-3"
+              onMouseLeave={handleMouseLeave}
+            >
+              {itemNames.map((item, index) => {
+                const baseColor =
+                  item === "Chef's Tasting Menu"
+                    ? "linear-gradient(135deg, #8a9ec7, #c79ec0, #9ec7a8, #c7b89e, #9eaec7, #c79e9e)"
+                    : currentColors[index % currentColors.length];
+
+                return (
+                  <div
+                    key={item}
+                    className="group relative"
+                    onMouseEnter={() => handleMouseEnter(item)}
+                  >
+                    <div
+                      className={`w-8 h-8 rounded-sm cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-glow ${
+                        highlightedItem === item ? "scale-110 shadow-glow" : ""
+                      }`}
+                      style={{
+                        background: baseColor,
+                        opacity: 0.8,
+                        border:
+                          item === "Chef's Tasting Menu"
+                            ? "1px solid rgba(255,255,255,0.5)"
+                            : `1px solid ${baseColor}`,
+                      }}
+                    ></div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
 
         {/* Geometric shape course selection - only shown when not loading */}
         {!loading && (
-          <div className="flex justify-center gap-16 mt-6">
+          <div className="flex justify-center gap-16 mt-8">
             {courseOptions.map((option) => (
               <button
                 key={option.id}
