@@ -48,7 +48,9 @@ export default function PrintReservations({
                 <div class="print-people">${reservation.people}</div>
                 <div class="print-name-time">
                   <div class="print-name">${reservation.name}</div>
-                  <div class="print-time">${reservation.time} • ${date}</div>
+                  <div class="print-time">
+                    ${reservation.time} • ${reservation.people} guests
+                  </div>
                 </div>
               </div>
               

@@ -12,7 +12,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import SkeletonAreaChart from "@/components/SkeletonAreaChart";
-import { CourseOption, DetailedVolumeData } from "@/types";
+import { DetailedVolumeData, CourseOption } from "@/types";
+// Import the centralized course options
+import { courseOptions } from "@/components/CourseOptions";
 
 export default function Volume() {
   const [detailedData, setDetailedData] = useState<DetailedVolumeData | null>(
@@ -24,105 +26,7 @@ export default function Volume() {
     useState<CourseOption["id"]>("mains");
   const [highlightedItem, setHighlightedItem] = useState<string | null>(null);
 
-  // Updated course options with larger SVGs
-  const courseOptions: CourseOption[] = [
-    {
-      id: "appetizers",
-      name: "Appetizers",
-      titleIcon: (
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 40 40"
-          className="inline-block mr-2 mb-1"
-        >
-          <polygon
-            points="20,5 38,35 2,35"
-            fill="white"
-            stroke="white"
-            strokeWidth="2"
-          />
-        </svg>
-      ),
-      icon: (isSelected) => (
-        <svg width="50" height="50" viewBox="0 0 40 40">
-          <polygon
-            points="20,5 38,35 2,35"
-            fill={isSelected ? "white" : "#333"}
-            stroke={isSelected ? "white" : "#333"}
-            strokeWidth="2"
-            className="transition-all duration-300"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: "mains",
-      name: "Mains",
-      titleIcon: (
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 30 30"
-          className="inline-block mr-2 mb-1"
-        >
-          <rect
-            x="3"
-            y="3"
-            width="24"
-            height="24"
-            fill="white"
-            stroke="white"
-            strokeWidth="2"
-          />
-        </svg>
-      ),
-      icon: (isSelected) => (
-        <svg width="50" height="50" viewBox="0 0 30 30">
-          <rect
-            x="3"
-            y="3"
-            width="24"
-            height="24"
-            fill={isSelected ? "white" : "#333"}
-            stroke={isSelected ? "white" : "#333"}
-            strokeWidth="2"
-            className="transition-all duration-300"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: "desserts",
-      name: "Desserts",
-      titleIcon: (
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 30 30"
-          className="inline-block mr-2 mb-1"
-        >
-          <polygon
-            points="15,2 28,11 23,28 7,28 2,11"
-            fill="white"
-            stroke="white"
-            strokeWidth="2"
-          />
-        </svg>
-      ),
-      icon: (isSelected) => (
-        <svg width="50" height="50" viewBox="0 0 30 30">
-          <polygon
-            points="15,2 28,11 23,28 7,28 2,11"
-            fill={isSelected ? "white" : "#333"}
-            stroke={isSelected ? "white" : "#333"}
-            strokeWidth="2"
-            className="transition-all duration-300"
-          />
-        </svg>
-      ),
-    },
-  ];
+  // Removed duplicated courseOptions array - now imported from centralized component
 
   // Fetch data from API
   useEffect(() => {
@@ -182,7 +86,9 @@ export default function Volume() {
       : detailedData!.dessertsData;
 
   // Get current color scheme
-  const currentColors = detailedData!.colors[selectedCourse];
+  const currentColors =
+    detailedData?.colors[selectedCourse as keyof typeof detailedData.colors] ||
+    [];
 
   // Get item names for the selected course - fix type error by filtering out non-string keys
   const itemNames = Object.keys(currentData[0]).filter(
@@ -253,7 +159,7 @@ export default function Volume() {
                         // Create a slightly brighter version for the edges
                         const brighterColor = baseColor.replace(
                           /rgba?\((\d+), (\d+), (\d+)(?:, [\d.]+)?\)/,
-                          (match, r, g, b) => {
+                          (match: string, r: string, g: string, b: string) => {
                             const brighterR = Math.min(255, parseInt(r) + 40);
                             const brighterG = Math.min(255, parseInt(g) + 40);
                             const brighterB = Math.min(255, parseInt(b) + 40);
