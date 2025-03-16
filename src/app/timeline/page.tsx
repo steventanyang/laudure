@@ -330,8 +330,8 @@ export default function Special() {
         handlePrint={() => {}} // We'll handle print differently
       />
 
-      {/* Add the print button component in the top right - aligned with nav */}
-      <div className="fixed top-[18px] right-8 z-50">
+      {/* Update the print button positioning to match filters button exactly */}
+      <div className="fixed top-2 right-8 z-50 py-4">
         <PrintReservations reservations={filteredReservations} date={today} />
       </div>
 
@@ -354,6 +354,12 @@ export default function Special() {
 
           {loading || isFiltering ? (
             <SkeletonTimeline />
+          ) : filteredReservations.length === 0 ? (
+            <div className="w-full max-w-4xl py-16 flex flex-col items-center justify-center text-center">
+              <div className="text-gray-400 text-xl font-bold">
+                No reservations match your filters
+              </div>
+            </div>
           ) : (
             <div className="relative w-full max-w-4xl">
               {/* Timeline line - only dotted with gradient fade */}
@@ -500,7 +506,7 @@ export default function Special() {
             {/* Right panel close button - use X icon instead of chevron */}
             <button
               onClick={closeSidePanel}
-              className="absolute top-6 right-6 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-gray-200 p-2 rounded transition-colors duration-200"
+              className="absolute top-6 right-6 text-gray-200 hover:text-white transition-colors duration-200"
             >
               <FaTimes size={16} />
             </button>
@@ -710,10 +716,10 @@ export default function Special() {
                 <button
                   onClick={() => navigateReservation("prev")}
                   disabled={!getPrevReservation()}
-                  className={`flex items-center px-4 py-2 rounded-md transition-colors ${
+                  className={`flex items-center px-4 py-2 transition-colors ${
                     getPrevReservation()
-                      ? "bg-gray-900 hover:bg-gray-800 text-white"
-                      : "bg-gray-900/50 text-gray-500 cursor-not-allowed"
+                      ? "text-gray-300 hover:text-white font-bold"
+                      : "text-gray-500 cursor-not-allowed"
                   }`}
                 >
                   <FaChevronLeft className="mr-2" size={14} />
@@ -722,10 +728,10 @@ export default function Special() {
                 <button
                   onClick={() => navigateReservation("next")}
                   disabled={!getNextReservation()}
-                  className={`flex items-center px-4 py-2 rounded-md transition-colors ${
+                  className={`flex items-center px-4 py-2 transition-colors ${
                     getNextReservation()
-                      ? "bg-gray-900 hover:bg-gray-800 text-white"
-                      : "bg-gray-900/50 text-gray-500 cursor-not-allowed"
+                      ? "text-gray-300 hover:text-white font-bold"
+                      : "text-gray-500 cursor-not-allowed"
                   }`}
                 >
                   Next

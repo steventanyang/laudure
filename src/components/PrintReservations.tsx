@@ -69,6 +69,9 @@ export default function PrintReservations({
                       // Get category and add appropriate shape
                       let shapeIcon = "";
 
+                      const { category } = getDishCategoryAndColor(dishText);
+                      const dishCategory = category as string;
+
                       if (dishText === "Chef's Tasting Menu") {
                         // Star shape for Chef's Menu
                         shapeIcon = `<svg width="16" height="16" viewBox="0 0 24 24" class="print-dish-icon">
@@ -76,18 +79,17 @@ export default function PrintReservations({
                             fill="#333" stroke="#333" strokeWidth="1" />
                         </svg>`;
                       } else {
-                        const { category } = getDishCategoryAndColor(dishText);
-                        if (category === "appetizers") {
+                        if (dishCategory === "appetizers") {
                           // Triangle
                           shapeIcon = `<svg width="16" height="16" viewBox="0 0 40 40" class="print-dish-icon">
                             <polygon points="20,5 38,35 2,35" fill="#333" stroke="#333" strokeWidth="2" />
                           </svg>`;
-                        } else if (category === "mains") {
+                        } else if (dishCategory === "mains") {
                           // Square
                           shapeIcon = `<svg width="16" height="16" viewBox="0 0 30 30" class="print-dish-icon">
                             <rect x="3" y="3" width="24" height="24" fill="#333" stroke="#333" strokeWidth="2" />
                           </svg>`;
-                        } else if (category === "desserts") {
+                        } else if (dishCategory === "desserts") {
                           // Pentagon
                           shapeIcon = `<svg width="16" height="16" viewBox="0 0 30 30" class="print-dish-icon">
                             <polygon points="15,2 28,11 23,28 7,28 2,11" fill="#333" stroke="#333" strokeWidth="2" />
@@ -307,7 +309,7 @@ export default function PrintReservations({
   return (
     <button
       onClick={handlePrint}
-      className="flex items-center px-4 py-2 bg-gray-900 hover:bg-gray-800 text-gray-300 hover:text-white rounded-md transition-colors duration-200"
+      className="flex items-center px-4 py-2 text-gray-300 hover:text-white font-bold transition-colors duration-200"
     >
       <FaPrint className="mr-2" size={14} />
       Print

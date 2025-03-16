@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NavItem, IndicatorStyle } from "@/types";
+import { NavItem } from "@/types";
 import { FaFilter } from "react-icons/fa";
 
 const navItems: NavItem[] = [
@@ -17,56 +17,20 @@ interface NavigationProps {
   handlePrint?: () => void; // Add this prop
 }
 
-export default function Navigation({
-  toggleFilters,
-}: NavigationProps) {
+export default function Navigation({ toggleFilters }: NavigationProps) {
   const pathname = usePathname();
   const [activeTab, setActiveTab] = useState<string>(pathname);
-  const [indicatorStyle, setIndicatorStyle] = useState<IndicatorStyle>({
-    opacity: 0, // Start invisible until we measure
-  });
   const navRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const navContainerRef = useRef<HTMLDivElement>(null);
 
-  // Initialize the indicator after the component mounts
-  useEffect(() => {
-    // Small delay to ensure DOM is fully rendered
-    const timer = setTimeout(() => {
-      updateIndicator(pathname);
-    }, 50);
-
-    return () => clearTimeout(timer);
-  }, [pathname]);
-
-  // Update indicator when path changes
+  // Update active tab when path changes
   useEffect(() => {
     const currentPath = navItems.find((item) => item.path === pathname)
       ? pathname
       : "/";
 
     setActiveTab(currentPath);
-    updateIndicator(currentPath);
   }, [pathname]);
-
-  const updateIndicator = (path: string) => {
-    const index = navItems.findIndex((item) => item.path === path);
-    if (index !== -1 && navRefs.current[index]) {
-      const element = navRefs.current[index];
-      if (element) {
-        setIndicatorStyle({
-          width: `${element.offsetWidth}px`,
-          transform: `translateX(${element.offsetLeft}px)`,
-          height: "80%", // Reduced height for tighter appearance
-          position: "absolute",
-          top: "10%", // Center it vertically
-          left: 0,
-          zIndex: 0,
-          opacity: 1,
-          borderRadius: "8px",
-        });
-      }
-    }
-  };
 
   // Check if we're on the timeline page
   const isTimelinePage = pathname === "/timeline";
@@ -79,7 +43,7 @@ export default function Navigation({
           {isTimelinePage && toggleFilters && (
             <button
               onClick={toggleFilters}
-              className="flex items-center px-4 py-2 bg-gray-900 hover:bg-gray-800 text-gray-300 hover:text-white rounded-md transition-colors duration-200"
+              className="flex items-center px-4 py-2 text-gray-300 hover:text-white font-bold transition-colors duration-200"
             >
               <FaFilter className="mr-2" size={14} />
               Filters
@@ -90,12 +54,6 @@ export default function Navigation({
         {/* Center the navigation tabs */}
         <div className="flex justify-center flex-1">
           <div className="relative flex justify-center" ref={navContainerRef}>
-            {/* Background indicator that moves */}
-            <div
-              className="absolute bg-zinc-800 transition-all duration-300 ease-in-out"
-              style={indicatorStyle}
-            />
-
             {navItems.map((item, index) => (
               <Link
                 key={item.path}
@@ -110,7 +68,6 @@ export default function Navigation({
                 }`}
                 onClick={() => {
                   setActiveTab(item.path);
-                  updateIndicator(item.path);
                 }}
               >
                 {item.name}

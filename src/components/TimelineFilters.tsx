@@ -182,21 +182,21 @@ export default function TimelineFilters({
           {/* Close button */}
           <button
             onClick={onToggle}
-            className="absolute top-6 right-6 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-gray-200 p-2 rounded transition-colors duration-200"
+            className="absolute top-10 right-6 text-white hover:text-gray-300 transition-colors duration-200"
           >
-            <FaChevronLeft size={16} />
+            <FaChevronLeft size={20} className="font-bold" />
           </button>
 
           {/* Header */}
           <div className="mb-10">
-            <h2 className="text-3xl font-bold text-gray-300">Filters</h2>
+            <h2 className="text-2xl font-bold text-gray-400">Filters</h2>
           </div>
 
           {/* Filter content */}
           <div className="space-y-8">
             {/* Time Filters */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-300 mb-4">
+              <h3 className="text-lg font-semibold text-gray-400 mb-4">
                 Time Slots
               </h3>
 
@@ -233,7 +233,7 @@ export default function TimelineFilters({
 
             {/* Special Requests Filters */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-200 mb-4">
+              <h3 className="text-lg font-semibold text-gray-400 mb-4">
                 Special Requests
               </h3>
               <div className="grid grid-cols-2 gap-6">
@@ -280,7 +280,7 @@ export default function TimelineFilters({
 
             {/* Status Filters */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-200 mb-4">
+              <h3 className="text-lg font-semibold text-gray-400 mb-4">
                 Status
               </h3>
               <div className="grid grid-cols-3 gap-6">
